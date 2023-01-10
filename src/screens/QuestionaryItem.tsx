@@ -43,7 +43,7 @@ type QuestionProps = {
 
 export function QuestionaryItem() {
 
-  const [step, setStep] = useState(15);
+  const [step, setStep] = useState(0);
   const [isButtonSelected, setIsButtonSelected] = useState(true);
   const [isButtonFrequencySelected, setIsButtonFrequencySelected] = useState(true);
   const [questionData, setQuestionData] = useState<QuestionProps[]>([])
