@@ -6,14 +6,18 @@ import { createBottomTabNavigator, BottomTabNavigationProp } from '@react-naviga
 import { Questionary } from '@screens/Questionary'
 import { Welcome } from '@screens/Welcome'
 import { useTheme } from 'native-base';
+import { QuestionaryItem } from '@screens/QuestionaryItem'
+import { Dashboard } from '@screens/Dashboard'
 
 type StackAppRoutes = {
   welcome: undefined;
   questionary: undefined;
+  questionaryItem: undefined;
+  dashboard: undefined;
+
 }
 
 type TabAppRoutes = {
-  welcome: undefined;
   questionary: undefined;
 }
 
@@ -25,8 +29,8 @@ export function AppRoutes() {
 
   const { sizes, colors } = useTheme()
 
+  const Stack = createNativeStackNavigator<StackAppRoutes>();
   const Tab = createBottomTabNavigator<TabAppRoutes>();
-  const Stack = createNativeStackNavigator<TabAppRoutes>();
 
 
   function HomeRoute() {
@@ -45,13 +49,6 @@ export function AppRoutes() {
         }
       }
       }>
-        <Tab.Screen
-          name="welcome"
-          component={Welcome}
-          options={{
-            tabBarButton: () => null
-          }}
-        />
 
         <Tab.Screen
           name="questionary"
@@ -68,14 +65,22 @@ export function AppRoutes() {
   function QuestionaryRoute() {
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {/* <Stack.Screen
+        <Stack.Screen
           name="welcome"
           component={Welcome}
-        /> */}
+        />
 
         <Stack.Screen
           name="questionary"
           component={Questionary}
+        />
+        <Stack.Screen
+          name="questionaryItem"
+          component={QuestionaryItem}
+        />
+        <Stack.Screen
+          name="dashboard"
+          component={Dashboard}
         />
 
       </Stack.Navigator>

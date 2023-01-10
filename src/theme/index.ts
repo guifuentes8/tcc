@@ -36,4 +36,22 @@ export const THEME = extendTheme({
     14: 56,
     33: 148,
   },
+
+  components: {
+    SliderThumb: {
+      defaultProps: {
+        colorScheme: "green.200",
+      },
+      baseStyle: ({ colorScheme }) => {
+        return {
+          _pressed: {
+            _interactionBox: {
+              borderWidth: "3",
+              borderColor: colorScheme,
+            },
+          },
+        };
+      },
+    },
+  },
 });

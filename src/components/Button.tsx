@@ -1,16 +1,17 @@
-import { Button as ButtonNativeBase, Center, IButtonProps, Text } from 'native-base';
+import { Button as ButtonNativeBase, Center, IButtonProps, IInputProps, Text } from 'native-base';
 
 type Props = IButtonProps & {
   title: string;
   upperCase?: boolean;
+  selected?: boolean;
 }
 
-export function Button({ title, upperCase = false, ...rest }: Props) {
+export function Button({ title, selected = true, upperCase = false, ...rest }: Props) {
   return (
     <ButtonNativeBase
       w="full"
       h={12}
-      bg="green.100"
+      bg={selected ? 'green.100' : 'gray.100'}
       _pressed={
         {
           bg: "green.200"

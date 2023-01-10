@@ -1,12 +1,14 @@
-import { Center, IImageProps, Image, Text, VStack } from "native-base";
+import { Center, Image, Text, VStack } from "native-base";
+import { ImageSourcePropType } from "react-native";
 
-type Props = IImageProps & {
+type Props = {
   titleQuestion: string;
+  srcImage: ImageSourcePropType;
   questionText?: string;
   itemText?: string;
 }
 
-export function QuestionaryHeader({ titleQuestion, questionText = '', itemText = '', ...rest }: Props) {
+export function QuestionaryHeader({ titleQuestion, srcImage, questionText = '', itemText = '' }: Props) {
   return (
     <VStack>
       <Text
@@ -20,14 +22,15 @@ export function QuestionaryHeader({ titleQuestion, questionText = '', itemText =
       <Image
         mt={4}
         alt="foto"
-        h={32}
-        w={32}
-        {...rest}
+        h={24}
+        w={24}
+        source={srcImage}
+        resizeMode="cover"
       />
 
       {itemText && <Text
         fontFamily="semibold"
-        fontSize="lg"
+        fontSize="md"
         color="white"
         mb={4}
       >

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Center, Text, VStack } from "native-base";
+import { Box, Center, ScrollView, Text, VStack } from "native-base";
 
 import { useNavigation } from "@react-navigation/native";
 
@@ -17,11 +17,11 @@ export function Welcome() {
   const navigation = useNavigation<AppNavigatorStackRoutesProps>()
 
   const StepOne = () => (
-    <Center px={8}>
+    <Center flex={1} px={8}>
       <HeaderWelcome title="Olá Guilherme," />
       <HeaderWelcome title="Seja bem vindo!" />
 
-      <LogoSvg height={300} width={200} />
+      <LogoSvg height={200} width={200} />
 
       <Points />
       <Points />
@@ -34,31 +34,32 @@ export function Welcome() {
   );
 
   const StepTwo = () => (
-    <Center px={8}>
+    <Center flex={1} px={8} >
       <HeaderWelcome
         title="Questionário"
         image
         alt="Imagem de questionário"
         source={ClipBoardText} />
 
-      <Box minHeight={400} mt={4} justifyContent="center">
+      <Box flex={1} mt={8} >
         <Text
           lineHeight={40}
           color="green.100"
           fontFamily="semibold"
           fontSize="md"
+
         >
-          Precisamos realizar um breve questionário sobre você.{'\n'}{'\n'}
+          Precisamos realizar um breve questionário sobre você.{'\n'}
           Não se preocupe!{'\n'}
-          São poucas questões para responder.{'\n'}{'\n'}
-          Isso nos ajudará a conhecermos melhor você!{'\n'}
+          São poucas questões para responder.{'\n'}
+          Isso nos ajudará a conhecermos melhor você!
         </Text>
       </Box>
 
       <Text textAlign="center" fontSize="md" color="white">Ao usar o nosso aplicativo, você concorda com os termos de uso.</Text>
       <Button mt={3} mb={4} title="Vamos lá" onPress={() => setStep(3)} />
       <HeaderWelcome title="2/2" />
-    </Center >
+    </Center>
   );
 
   useEffect(() => {
