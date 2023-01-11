@@ -6,11 +6,11 @@ type Props = IButtonProps & {
   selected?: boolean;
 }
 
-export function Button({ title, selected = true, upperCase = false, ...rest }: Props) {
+export function Button({ title, selected = true, fontSize = 'xl', upperCase = false, ...rest }: Props) {
   return (
     <ButtonNativeBase
       w="full"
-      h={12}
+      h={14}
       bg={selected ? 'green.100' : 'gray.100'}
       _pressed={
         {
@@ -23,7 +23,7 @@ export function Button({ title, selected = true, upperCase = false, ...rest }: P
         <Text
           color="green.900"
           fontFamily="audiowide"
-          fontSize="lg"
+          fontSize={fontSize}
         >
           {upperCase ? title.toLocaleUpperCase() : title}
         </Text>

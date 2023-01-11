@@ -11,31 +11,34 @@ type Props = {
 export function QuestionaryHeader({ titleQuestion, srcImage, questionText = '', itemText = '' }: Props) {
   return (
     <VStack>
-      <Text
-        fontFamily="audiowide"
-        fontSize="xl"
-        color="green.100"
-      >
-        {titleQuestion}
-      </Text>
+      <Center mb={4}>
+        <Text
+          fontFamily="audiowide"
+          fontSize="xl"
+          color="green.100"
+        >
+          {titleQuestion}
+        </Text>
 
-      <Image
-        mt={4}
-        alt="foto"
-        h={24}
-        w={24}
-        source={srcImage}
-        resizeMode="cover"
-      />
+        <Image
+          mt={4}
+          alt="foto"
+          h={24}
+          w={24}
+          source={srcImage}
+          resizeMode="cover"
+        />
 
-      {itemText && <Text
-        fontFamily="semibold"
-        fontSize="md"
-        color="white"
-        mb={4}
-      >
-        {itemText}
-      </Text>}
+        {itemText && <Text
+          fontFamily="semibold"
+          fontSize="lg"
+          color="white"
+          mt={4}
+        >
+          {itemText}
+        </Text>}
+      </Center>
+
 
       {questionText && <Text
         fontFamily="medium"

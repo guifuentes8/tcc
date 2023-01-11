@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Controller, useForm } from 'react-hook-form';
-import { ImageSourcePropType, StyleSheet } from "react-native";
+import { ImageSourcePropType, ScrollView } from "react-native";
 
-import { useNavigation } from "@react-navigation/native";
+import { MaterialIcons } from '@expo/vector-icons'
 
-import { HStack, ScrollView, Switch, VStack } from "native-base";
+import { useNavigation, useScrollToTop } from "@react-navigation/native";
+
+import { Box, Center, HStack, Icon, VStack } from "native-base";
 
 import Refrigerator from '@assets/geladeira.png'
 import EletricStove from '@assets/fogao-eletrico.png'
@@ -29,6 +31,7 @@ import { Button } from "@components/Button";
 import { SliderRange } from "@components/SliderRange";
 import { AskQuestionText } from "@components/AskQuestionText";
 import { AppNavigatorStackRoutesProps, AppNavigatorTabRoutesProps } from "@routes/app.routes";
+import { Loading } from "@components/Loading";
 
 type QuestionProps = {
   itemName: string;
@@ -39,17 +42,20 @@ type QuestionProps = {
   maxRangePossession: number;
 }
 
-
-
 export function QuestionaryItem() {
 
+  const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState(0);
+  const [dayByWeekValue, setDayByWeekValue] = useState(0);
+  const [dayByMonthValue, setDayByMonthValue] = useState(0);
+  const [valueItemSize, setValueItemSize] = useState(0);
   const [isButtonSelected, setIsButtonSelected] = useState(true);
   const [isButtonFrequencySelected, setIsButtonFrequencySelected] = useState(true);
-  const [questionData, setQuestionData] = useState<QuestionProps[]>([])
   const [formData, setFormData] = useState({})
+  const [questionData, setQuestionData] = useState<QuestionProps[]>([])
+  const ref = useRef<any>(null)
 
-  const { control, handleSubmit, resetField } = useForm({
+  const { control, handleSubmit } = useForm({
     defaultValues: {
       posses: 0,
       allDay: true,
@@ -57,35 +63,43 @@ export function QuestionaryItem() {
       minutes: 0,
       dayByMonth: 0,
       dayByWeek: 0,
-    }
+    },
   });
 
   const navigation = useNavigation<AppNavigatorStackRoutesProps>();
 
-  function handleQuestionaryForm(data: any) {
+  async function handleQuestionaryForm(data: any) {
 
 
+    isButtonFrequencySelected ? data.dayByWeek = 0 : data.dayByMonth = 0
     data.posses === undefined ? data.posses = 0 : data.posses
     data.allDay === undefined && isButtonSelected ? data.allDay = true : data.allDay = false
     const questionaryForm = { ...formData, [questionData[step].itemName.toLowerCase()]: data }
+
+    setValueItemSize(0)
+    setDayByMonthValue(0)
+    setDayByWeekValue(0)
 
     setFormData(questionaryForm)
     if (step === 15) {
       return navigation.navigate('dashboard')
     }
     setStep(prevState => prevState + 1)
-
-    resetField('posses')
-    resetField('dayByMonth')
-    resetField('dayByWeek')
-
-
   }
+
+
 
   useEffect(() => {
     setIsButtonSelected(true);
     setIsButtonFrequencySelected(true);
   }, [step])
+
+  useEffect(() => {
+    setDayByMonthValue(0)
+    setDayByWeekValue(0)
+  }, [isButtonFrequencySelected])
+
+
 
   useEffect(() => {
     setQuestionData([
@@ -237,92 +251,56 @@ export function QuestionaryItem() {
     ])
   }, [])
 
-
-  function PossesRangeInput() {
-    return (
-      <Controller
-        key="posses"
-        control={control}
-        name="posses"
-        defaultValue={0}
-        render={({ field: { value, onChange } }) => (
-          <SliderRange
-            defaultValue={0}
-            onChange={onChange}
-            min={0}
-            value={value}
-            max={questionData[step]?.maxRangePossession}
-          />
-        )}
-      />
-    )
-  }
-
-  function DaySlideInput() {
-    return isButtonFrequencySelected ? (
-      <Controller
-        key="dayByMonth"
-        control={control}
-        name='dayByMonth'
-        defaultValue={0}
-        render={({ field: { value, onChange } }) => (
-          <SliderRange
-            defaultValue={0}
-            onChange={onChange}
-            value={value}
-            step={3}
-            min={0}
-            max={30}
-          />
-        )}
-      />
-    ) : (
-      <Controller
-        key="dayByWeek"
-        control={control}
-        name='dayByWeek'
-        defaultValue={0}
-        render={({ field: { value, onChange } }) => (
-          <SliderRange
-            defaultValue={0}
-            onChange={onChange}
-            value={value}
-            min={0}
-            max={7}
-          />
-        )}
-      />
-    )
-
-  }
-
-
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+    <ScrollView
+      ref={ref}
+      contentContainerStyle={{ flexGrow: 1 }}
+      showsVerticalScrollIndicator={false}>
       <VStack mt={12} px={8} pb={4}>
         {questionData.length > 0 &&
           <>
-            <QuestionaryHeader
-              titleQuestion={questionData[step]?.titleQuestion}
-              srcImage={questionData[step]?.src}
-              key={questionData[step]?.itemText}
-              itemText={`Item selecionado: ${questionData[step]?.itemText}`}
-            />
+            <Center mb={6}>
+              <QuestionaryHeader
+                titleQuestion={questionData[step]?.titleQuestion}
+                srcImage={questionData[step]?.src}
+                key={questionData[step]?.itemText}
+                itemText={questionData[step]?.itemText}
+              />
+            </Center>
+            <VStack mb={6}>
+              <Box mb={18}>
+                <AskQuestionText question={questionData[step]?.questionAsk[0]} />
+              </Box>
+              <Controller
+                defaultValue={0}
+                key="posses"
+                control={control}
+                name="posses"
+                render={({ field: { onChange } }) => (
+                  <SliderRange
 
-            <AskQuestionText question={questionData[step]?.questionAsk[0]} />
-            <PossesRangeInput />
+                    onChange={(v) => {
+                      setValueItemSize(v)
+                      onChange(v)
+                    }}
+                    value={valueItemSize}
+                    myValue={valueItemSize}
+                    min={0}
+                    max={questionData[step]?.maxRangePossession}
+                  />
+                )}
+              />
+            </VStack>
 
             <AskQuestionText question={questionData[step]?.questionAsk[1]} />
-            <HStack justifyContent="space-between" mb={4}>
-
-
+            <HStack justifyContent="space-between" my={6}>
               <Controller
                 key="allDay"
                 control={control}
                 name="allDay"
                 render={({ field: { onChange } }) => (
                   <Button
-                    fontSize="xs"
+                    fontSize="20px"
                     w={33}
                     title="24 horas"
                     selected={isButtonSelected}
@@ -336,9 +314,9 @@ export function QuestionaryItem() {
               />
 
               <Button
-                fontSize="xs"
+                fontSize="20px"
                 w={33}
-                title="Hora / min"
+                title="Hora / Min"
                 selected={!isButtonSelected}
                 onPress={() => {
                   setIsButtonSelected(!isButtonSelected)
@@ -348,17 +326,24 @@ export function QuestionaryItem() {
 
             </HStack>
             {!isButtonSelected &&
-              <VStack mt={4} >
-                <AskQuestionText question="Horas" />
+              <VStack>
+                <HStack>
+                  <Center flexDirection="row" ml={-2}>
+                    <Icon mr={1} as={MaterialIcons} name="schedule" size={6} color="green.100" />
+                    <AskQuestionText question="Horas:" />
+                  </Center>
+                </HStack>
+
                 <Controller
                   key="hour"
                   control={control}
                   name="hour"
                   render={({ field: { value, onChange } }) => (
                     <SliderRange
-
+                      mb={6}
                       defaultValue={0}
                       onChange={onChange}
+                      myValue={value}
                       value={value}
                       min={0}
                       max={23}
@@ -366,15 +351,22 @@ export function QuestionaryItem() {
                   )}
                 />
 
-                <AskQuestionText question="Minutos" />
+                <HStack>
+                  <Center flexDirection="row" ml={-2}>
+                    <Icon mr={1} as={MaterialIcons} name="timer" size={6} color="green.100" />
+                    <AskQuestionText question="Minutos:" />
+                  </Center>
+                </HStack>
                 <Controller
                   key='minutes'
                   control={control}
                   name="minutes"
                   render={({ field: { value, onChange } }) => (
                     <SliderRange
+                      mb={8}
                       defaultValue={0}
                       onChange={onChange}
+                      myValue={value}
                       value={value}
                       step={15}
                       min={0}
@@ -388,10 +380,10 @@ export function QuestionaryItem() {
 
             <AskQuestionText question={questionData[step]?.questionAsk[2]} />
 
-            <HStack justifyContent="space-between" mb={4}>
+            <HStack justifyContent="space-between" my={6}>
 
               <Button
-                fontSize="xs"
+                fontSize="20px"
                 w={33}
                 title="Mensal"
                 selected={isButtonFrequencySelected}
@@ -401,7 +393,7 @@ export function QuestionaryItem() {
               />
 
               <Button
-                fontSize="xs"
+                fontSize="20px"
                 w={33}
                 title="Semanal"
                 selected={!isButtonFrequencySelected}
@@ -409,23 +401,66 @@ export function QuestionaryItem() {
                   setIsButtonFrequencySelected(!isButtonFrequencySelected)
                 }}
               />
-
             </HStack>
 
-            <AskQuestionText question={`Quantidade de dias por ${isButtonFrequencySelected ? 'mês' : 'semana'} que você usa:`} />
+            <Box mb={18}>
+              <AskQuestionText question={`Quantidade de dias por ${isButtonFrequencySelected ? 'mês' : 'semana'} que você usa:`} />
+            </Box>
 
-            <DaySlideInput />
+            {isButtonFrequencySelected && (
+              <Controller
+                key="dayByMonth"
+                control={control}
+                name='dayByMonth'
+                defaultValue={0}
+                render={({ field: { onChange } }) => (
+                  <SliderRange
+                    onChange={(v) => {
+                      setDayByMonthValue(v)
+                      onChange(v)
+                    }}
+                    value={dayByMonthValue}
+                    myValue={dayByMonthValue}
+                    min={0}
+                    max={30}
+                  />
+                )}
+              />
+            )}
+
+            {!isButtonFrequencySelected && (
+              <Controller
+                key="dayByWeek"
+                control={control}
+                name='dayByWeek'
+                defaultValue={0}
+                render={({ field: { onChange } }) => (
+                  <SliderRange
+                    onChange={(v) => {
+                      setDayByWeekValue(v)
+                      onChange(v)
+                    }}
+                    value={dayByWeekValue}
+                    myValue={dayByWeekValue}
+                    min={0}
+                    max={7}
+                  />
+                )}
+              />
+            )}
           </>
         }
 
-
-        <HStack flex={1} mb={8} alignItems="flex-end" justifyContent='space-between'>
+        <HStack flex={1} my={8} alignItems="center" justifyContent='space-between'>
           {/* {step > 0 && <NextButton onPress={() => setStep(prevState => prevState - 1)} action="Anterior" icon="arrow-back" />} */}
-          <Button title="pular" maxW={32} mb={8} upperCase onPress={() => setStep((prev) => prev + 1)} />
-          <NextButton onPress={handleSubmit(handleQuestionaryForm)} action="Próxima" icon="arrow-forward" />
+          <Button title="Pular" maxW={32} onPress={() => setStep((prev) => prev + 1)} />
+          <NextButton onPress={() => {
+            ref?.current?.scrollTo({ offset: 0, animated: true });
+            handleSubmit(handleQuestionaryForm)()
+          }} action="Próxima" icon="arrow-forward" />
+
         </HStack>
       </VStack>
-
     </ScrollView>
   )
 }

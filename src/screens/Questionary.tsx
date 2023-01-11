@@ -122,7 +122,7 @@ export function Questionary() {
               <InputQuestionary
                 isRequired
                 onChangeText={onChange}
-                placeholder="Exemplo: 1"
+                placeholder="1"
               />
             )}
           />

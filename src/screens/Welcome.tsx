@@ -23,10 +23,14 @@ export function Welcome() {
 
       <LogoSvg height={200} width={200} />
 
-      <Points />
-      <Points />
-      <Points />
-      <Points />
+      <VStack justifyContent="center" flex={1} >
+        <Points />
+        <Points />
+        <Points />
+        <Points />
+      </VStack>
+
+
 
       <Button my={8} title="Continuar" onPress={() => setStep(2)} />
       <HeaderWelcome title="1/2" />
@@ -41,22 +45,22 @@ export function Welcome() {
         alt="Imagem de questionário"
         source={ClipBoardText} />
 
-      <Box flex={1} mt={8} >
+      <VStack flex={1} mt={8} justifyContent="center" >
         <Text
           lineHeight={40}
           color="green.100"
-          fontFamily="semibold"
-          fontSize="md"
+          fontFamily="medium"
+          fontSize="lg"
 
         >
-          Precisamos realizar um breve questionário sobre você.{'\n'}
+          Precisamos realizar um breve questionário sobre você...{'\n'} {'\n'}
           Não se preocupe!{'\n'}
-          São poucas questões para responder.{'\n'}
+          São poucas questões para responder!{'\n'} {'\n'}
           Isso nos ajudará a conhecermos melhor você!
         </Text>
-      </Box>
+      </VStack>
 
-      <Text textAlign="center" fontSize="md" color="white">Ao usar o nosso aplicativo, você concorda com os termos de uso.</Text>
+      <Text textAlign="center" fontFamily="regular" fontSize="md" color="white">Ao usar o nosso aplicativo, você concorda com os termos de uso.</Text>
       <Button mt={3} mb={4} title="Vamos lá" onPress={() => setStep(3)} />
       <HeaderWelcome title="2/2" />
     </Center>

@@ -6,6 +6,6 @@ type Props = ITextProps & {
 
 export function AskQuestionText({ question }: Props) {
   return (
-    <Text fontFamily="regular" fontSize="sm" color="green.100" mb={2}>{question}</Text>
+    <Text fontFamily="medium" fontSize="md" color="green.100">{question}</Text>
   )
 }

@@ -1,13 +1,12 @@
 import { TouchableOpacity } from "react-native";
-import { Center, ScrollView, Text, VStack } from "native-base";
+import { VStack, Center, Text, ScrollView } from "native-base";
 
 import { useNavigation } from "@react-navigation/native";
 import { AuthNavigatorRoutesProps } from "@routes/auth.routes";
 
-import { Button } from "@components/Button";
 import { Header } from "@components/Header";
 import { Input } from "@components/Input";
-
+import { Button } from "@components/Button";
 
 export function SignUp() {
 
@@ -21,8 +20,13 @@ export function SignUp() {
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
 
       <VStack pt={12} pb={8}>
-        <Header title="Entre na sua conta" />
+        <Header title="Crie sua conta" />
         <Center mt={8} px={8} >
+          <Input
+            placeholder="Nome"
+            iconName="person"
+            onChangeText={() => { }}
+          />
 
           <Input
             placeholder="E-mail"
@@ -43,15 +47,23 @@ export function SignUp() {
 
           />
 
+          <Input
+            placeholder="Confirme a sua senha"
+            iconName="lock"
+            secureTextEntry
+            // value=""
+            returnKeyType="send"
+            onChangeText={() => { }}
 
-          <Button mt={8} title="entrar" />
+          />
+          <Button upperCase mt={8} title="cadastrar" />
         </Center>
       </VStack>
 
       <Center>
         <TouchableOpacity onPress={handleGoToSignIn}>
-          <Text color="white" underline fontFamily="regular" fontSize="sm" pb={16}>
-            Não possui conta? Crie uma agora!
+          <Text color="white" underline fontFamily="medium" fontSize="md" pb={16}>
+            Já possui cadastro? Faça seu login.
           </Text>
         </TouchableOpacity>
       </Center>

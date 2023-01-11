@@ -25,7 +25,7 @@ export function InputQuestionary({ errorMessage = null, isInvalid = false, ...re
         fontFamily="regular"
         borderColor="green.100"
         color={invalid ? "red.500" : "green.100"}
-        placeholderTextColor="gray.500"
+        placeholderTextColor="gray.400"
         isInvalid={invalid}
         _invalid={{
           borderWidth: 2,
