@@ -1,12 +1,12 @@
 import { useEffect, useState, useRef } from "react";
 import { Controller, useForm } from 'react-hook-form';
-import { ImageSourcePropType, ScrollView } from "react-native";
+import { ImageSourcePropType } from "react-native";
 
 import { MaterialIcons } from '@expo/vector-icons'
 
-import { useNavigation, useScrollToTop } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 
-import { Box, Center, HStack, Icon, VStack } from "native-base";
+import { Box, Center, HStack, Icon, VStack, ScrollView } from "native-base";
 
 import Refrigerator from '@assets/geladeira.png'
 import EletricStove from '@assets/fogao-eletrico.png'
@@ -52,8 +52,155 @@ export function QuestionaryItem() {
   const [isButtonSelected, setIsButtonSelected] = useState(true);
   const [isButtonFrequencySelected, setIsButtonFrequencySelected] = useState(true);
   const [formData, setFormData] = useState({})
-  const [questionData, setQuestionData] = useState<QuestionProps[]>([])
   const ref = useRef<any>(null)
+
+  const questionData = [
+    {
+      titleQuestion: 'Cozinha',
+      itemName: 'refrigerator',
+      src: Refrigerator,
+      itemText: 'Geladeira',
+      questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
+      maxRangePossession: 5,
+
+    },
+    {
+      titleQuestion: 'Cozinha',
+      itemName: 'EletricStove',
+      src: EletricStove,
+      itemText: 'Fogão elétrico',
+      questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
+
+      maxRangePossession: 5,
+
+    },
+    {
+      titleQuestion: 'Cozinha',
+      itemName: 'EletricOven',
+      src: EletricOven,
+      itemText: 'Forno elétrico',
+      questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
+
+      maxRangePossession: 5,
+
+    },
+    {
+      titleQuestion: 'Cozinha',
+      itemName: 'Microwave',
+      src: Microwave,
+      itemText: 'Micro-ondas',
+      questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
+
+      maxRangePossession: 10,
+    },
+    {
+      titleQuestion: 'Lavanderia',
+      itemName: 'WashingMachine',
+      src: WashingMachine,
+      itemText: 'Máquina de lavar roupa',
+      questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
+
+      maxRangePossession: 5,
+    },
+    {
+      titleQuestion: 'Lavanderia',
+      itemName: 'ClothesDryer',
+      src: ClothesDryer,
+      itemText: 'Secadora de roupas',
+      questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
+
+      maxRangePossession: 5,
+    },
+    {
+      titleQuestion: 'Banheiro',
+      itemName: 'Shower',
+      src: Shower,
+      itemText: 'Chuveiro elétrico',
+      questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
+
+      maxRangePossession: 10,
+    },
+    {
+      titleQuestion: 'Banheiro',
+      itemName: 'HairDryer',
+      src: HairDryer,
+      itemText: 'Secador de cabelo',
+      questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
+
+      maxRangePossession: 10,
+    },
+    {
+      titleQuestion: 'Banheiro',
+      itemName: 'EletricFaucet',
+      src: EletricFaucet,
+      itemText: 'Torneira elétrica',
+      questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
+
+      maxRangePossession: 20,
+    },
+    {
+      titleQuestion: 'Eletrodomésticos',
+      itemName: 'AirConditioner',
+      src: AirConditioner,
+      itemText: 'Ar-condicionado',
+      questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
+
+      maxRangePossession: 20,
+    },
+    {
+      titleQuestion: 'Eletrodomésticos',
+      itemName: 'Fan',
+      src: Fan,
+      itemText: 'Ventilador',
+      questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
+
+      maxRangePossession: 20,
+    },
+    {
+      titleQuestion: 'Eletrodomésticos',
+      itemName: 'VacuumCleaner',
+      src: VacuumCleaner,
+      itemText: 'Aspirador de pó',
+      questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
+
+      maxRangePossession: 10,
+    },
+    {
+      titleQuestion: 'Eletrodomésticos',
+      itemName: 'EletricIron',
+      src: EletricIron,
+      itemText: 'Ferro elétrico',
+      questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
+
+      maxRangePossession: 20,
+    },
+    {
+      titleQuestion: 'Eletrônicos',
+      itemName: 'Videogame',
+      src: Videogame,
+      itemText: 'Videogame',
+      questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
+
+      maxRangePossession: 5,
+    },
+    {
+      titleQuestion: 'Eletrônicos',
+      itemName: 'Tv',
+      src: Tv,
+      itemText: 'Televisão',
+      questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
+
+      maxRangePossession: 20,
+    },
+    {
+      titleQuestion: 'Eletrônicos',
+      itemName: 'Computer',
+      src: Computer,
+      itemText: 'Computador',
+      questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
+      maxRangePossession: 20,
+    },
+  ]
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
@@ -82,7 +229,7 @@ export function QuestionaryItem() {
 
     setFormData(questionaryForm)
     if (step === 15) {
-      return navigation.navigate('dashboard')
+      return navigation.navigate('tabDashboard')
     }
     setStep(prevState => prevState + 1)
   }
@@ -99,164 +246,15 @@ export function QuestionaryItem() {
     setDayByWeekValue(0)
   }, [isButtonFrequencySelected])
 
-
-
-  useEffect(() => {
-    setQuestionData([
-      {
-        titleQuestion: 'Cozinha',
-        itemName: 'refrigerator',
-        src: Refrigerator,
-        itemText: 'Geladeira',
-        questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
-        maxRangePossession: 5,
-
-      },
-      {
-        titleQuestion: 'Cozinha',
-        itemName: 'EletricStove',
-        src: EletricStove,
-        itemText: 'Fogão elétrico',
-        questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
-
-        maxRangePossession: 5,
-
-      },
-      {
-        titleQuestion: 'Cozinha',
-        itemName: 'EletricOven',
-        src: EletricOven,
-        itemText: 'Forno elétrico',
-        questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
-
-        maxRangePossession: 5,
-
-      },
-      {
-        titleQuestion: 'Cozinha',
-        itemName: 'Microwave',
-        src: Microwave,
-        itemText: 'Micro-ondas',
-        questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
-
-        maxRangePossession: 10,
-      },
-      {
-        titleQuestion: 'Lavanderia',
-        itemName: 'WashingMachine',
-        src: WashingMachine,
-        itemText: 'Máquina de lavar roupa',
-        questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
-
-        maxRangePossession: 5,
-      },
-      {
-        titleQuestion: 'Lavanderia',
-        itemName: 'ClothesDryer',
-        src: ClothesDryer,
-        itemText: 'Secadora de roupas',
-        questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
-
-        maxRangePossession: 5,
-      },
-      {
-        titleQuestion: 'Banheiro',
-        itemName: 'Shower',
-        src: Shower,
-        itemText: 'Chuveiro elétrico',
-        questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
-
-        maxRangePossession: 10,
-      },
-      {
-        titleQuestion: 'Banheiro',
-        itemName: 'HairDryer',
-        src: HairDryer,
-        itemText: 'Secador de cabelo',
-        questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
-
-        maxRangePossession: 10,
-      },
-      {
-        titleQuestion: 'Banheiro',
-        itemName: 'EletricFaucet',
-        src: EletricFaucet,
-        itemText: 'Torneira elétrica',
-        questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
-
-        maxRangePossession: 20,
-      },
-      {
-        titleQuestion: 'Eletrodomésticos',
-        itemName: 'AirConditioner',
-        src: AirConditioner,
-        itemText: 'Ar-condicionado',
-        questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
-
-        maxRangePossession: 20,
-      },
-      {
-        titleQuestion: 'Eletrodomésticos',
-        itemName: 'Fan',
-        src: Fan,
-        itemText: 'Ventilador',
-        questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
-
-        maxRangePossession: 20,
-      },
-      {
-        titleQuestion: 'Eletrodomésticos',
-        itemName: 'VacuumCleaner',
-        src: VacuumCleaner,
-        itemText: 'Aspirador de pó',
-        questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
-
-        maxRangePossession: 10,
-      },
-      {
-        titleQuestion: 'Eletrodomésticos',
-        itemName: 'EletricIron',
-        src: EletricIron,
-        itemText: 'Ferro elétrico',
-        questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
-
-        maxRangePossession: 20,
-      },
-      {
-        titleQuestion: 'Eletrônicos',
-        itemName: 'Videogame',
-        src: Videogame,
-        itemText: 'Videogame',
-        questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
-
-        maxRangePossession: 5,
-      },
-      {
-        titleQuestion: 'Eletrônicos',
-        itemName: 'Tv',
-        src: Tv,
-        itemText: 'Televisão',
-        questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
-
-        maxRangePossession: 20,
-      },
-      {
-        titleQuestion: 'Eletrônicos',
-        itemName: 'Computer',
-        src: Computer,
-        itemText: 'Computador',
-        questionAsk: ['Quantas você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?'],
-        maxRangePossession: 20,
-      },
-    ])
-  }, [])
-
   return (
     <ScrollView
       ref={ref}
+      mt={12} px={8} pb={4}
       contentContainerStyle={{ flexGrow: 1 }}
-      showsVerticalScrollIndicator={false}>
-      <VStack mt={12} px={8} pb={4}>
+      showsVerticalScrollIndicator={false}
+    >
+
+      <VStack >
         {questionData.length > 0 &&
           <>
             <Center mb={6}>

@@ -3,9 +3,11 @@ import { Platform } from 'react-native'
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { createBottomTabNavigator, BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 
+import { CurrencyCircleDollar } from 'phosphor-react-native'
+
 import { Questionary } from '@screens/Questionary'
 import { Welcome } from '@screens/Welcome'
-import { useTheme } from 'native-base';
+import { Box, Icon, useTheme } from 'native-base';
 import { QuestionaryItem } from '@screens/QuestionaryItem'
 import { Dashboard } from '@screens/Dashboard'
 
@@ -13,12 +15,14 @@ type StackAppRoutes = {
   welcome: undefined;
   questionary: undefined;
   questionaryItem: undefined;
-  dashboard: undefined;
+  tabDashboard: undefined;
 
 }
 
 type TabAppRoutes = {
-  questionary: undefined;
+  dashboard: undefined;
+  dash: undefined;
+
 }
 
 export type AppNavigatorStackRoutesProps = NativeStackNavigationProp<StackAppRoutes>;
@@ -33,7 +37,7 @@ export function AppRoutes() {
   const Tab = createBottomTabNavigator<TabAppRoutes>();
 
 
-  function HomeRoute() {
+  function TabDashboard() {
     return (
       <Tab.Navigator screenOptions={{
         headerShown: false,
@@ -41,20 +45,57 @@ export function AppRoutes() {
         tabBarActiveTintColor: colors.green[500],
         tabBarInactiveTintColor: colors.gray[200],
         tabBarStyle: {
-          backgroundColor: colors.gray[600],
+
+          backgroundColor: colors.green[800],
           borderTopWidth: 0,
           height: Platform.OS === "android" ? 'auto' : 96,
-          paddingBottom: sizes[10],
-          paddingTop: sizes[6]
+          paddingBottom: sizes[16],
+          paddingTop: sizes[4],
+          paddingHorizontal: sizes[4],
         }
-      }
-      }>
-
+      }}
+      >
         <Tab.Screen
-          name="questionary"
-          component={Questionary}
+          name="dashboard"
+          component={Dashboard}
           options={{
-            tabBarButton: () => null
+            tabBarButton: () => (
+              <Box
+                bg="green.100"
+                alignItems="center"
+                justifyContent="center"
+                rounded="full"
+                width={12}
+                height={12}
+              >
+                <Icon
+                  as={<CurrencyCircleDollar color={colors.green[900]} weight="regular" size={40} />}
+                />
+              </Box>
+
+            )
+          }}
+        />
+        <Tab.Screen
+          name="dash"
+          component={Dashboard}
+          options={{
+
+            tabBarButton: () => (
+              <Box
+                bg="green.100"
+                alignItems="center"
+                justifyContent="center"
+                rounded="full"
+                width={12}
+                height={12}
+              >
+                <Icon
+                  as={<CurrencyCircleDollar color={colors.green[900]} weight="regular" size={40} />}
+                />
+              </Box>
+
+            )
           }}
         />
 
@@ -65,7 +106,7 @@ export function AppRoutes() {
   function QuestionaryRoute() {
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen
+        {/* <Stack.Screen
           name="welcome"
           component={Welcome}
         />
@@ -77,10 +118,12 @@ export function AppRoutes() {
         <Stack.Screen
           name="questionaryItem"
           component={QuestionaryItem}
-        />
+        /> */}
+
         <Stack.Screen
-          name="dashboard"
-          component={Dashboard}
+          name="tabDashboard"
+          component={TabDashboard}
+
         />
 
       </Stack.Navigator>

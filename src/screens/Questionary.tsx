@@ -76,9 +76,9 @@ export function Questionary() {
   }, [step])
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+    <ScrollView flex={1} mt={12} px={8} pb={4} contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
 
-      <VStack flex={1} mt={12} px={8} pb={4}>
+      <VStack >
 
         {questionData.length > 0 &&
 
