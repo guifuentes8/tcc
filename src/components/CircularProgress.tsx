@@ -13,11 +13,15 @@ type Props = {
   maxValue?: number;
   value?: number;
   children?: ReactNode;
+  valuePrefix?: string;
+  valueSuffix?: string;
 }
 
 export function CircularProgressBar({
   children,
   value = 100,
+  valuePrefix = '',
+  valueSuffix = '',
   title = 'Kwh/mês',
   strokeSize,
   radius = 80,
@@ -36,7 +40,7 @@ export function CircularProgressBar({
       value={value}
       maxValue={maxValue}
       radius={radius}
-      duration={3000}
+      duration={2000}
       activeStrokeWidth={circularProgressValue !== 0 ? 0 : strokeSize}
       activeStrokeColor={colors.green[100]}
       inActiveStrokeWidth={circularProgressValue !== 0 ? 0 : strokeSize}
@@ -49,8 +53,9 @@ export function CircularProgressBar({
           radius={radius}
           maxValue={maxValue}
           value={circularProgressValue}
-          valueSuffix={title.length === 0 ? '%' : ''}
-          duration={3000}
+          valuePrefix={valuePrefix}
+          valueSuffix={valueSuffix}
+          duration={2000}
           activeStrokeWidth={strokeSize}
           activeStrokeColor={colors.green[100]}
           inActiveStrokeWidth={strokeSize}

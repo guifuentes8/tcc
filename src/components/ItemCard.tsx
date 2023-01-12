@@ -1,13 +1,13 @@
 import { Box, Image, Text } from "native-base";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, TouchableOpacityProps } from "react-native";
 
-type Props = {
+type Props = TouchableOpacityProps & {
   itemName: string;
 }
 
-export function ItemCard({ itemName }: Props) {
+export function ItemCard({ itemName, ...rest }: Props) {
   return (
-    <TouchableOpacity>
+    <TouchableOpacity {...rest}>
       <Box
         rounded="xl"
         bg="green.800"
@@ -19,8 +19,8 @@ export function ItemCard({ itemName }: Props) {
         mt={2}
       >
         <Image
-          w={16}
-          h={16}
+          w={20}
+          h={20}
           alt="Foto item"
           source={{ uri: 'https://github.com/guifuentes8.png' }}
         />

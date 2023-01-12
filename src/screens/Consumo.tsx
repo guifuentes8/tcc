@@ -2,11 +2,14 @@ import { HeaderActionsUser } from "@components/HeaderActionsUser";
 import { ItemCard } from "@components/ItemCard";
 import { ProgressBar } from "@components/ProgressBar";
 import { SelectInput } from "@components/SelectInput";
+import { useNavigation } from "@react-navigation/native";
+import { AppNavigatorTabRoutesProps } from "@routes/app.routes";
 import { FlatList, ScrollView, SectionList, Text, useTheme, VStack } from "native-base";
 
 export function Consumo() {
 
   const { colors } = useTheme()
+  const navigation = useNavigation<AppNavigatorTabRoutesProps>()
 
   const data = [
     {
@@ -35,6 +38,11 @@ export function Consumo() {
     },
 
   ]
+
+  function handleNavigateToDetails() {
+    navigation.navigate('consumoDetail')
+  }
+
   return (
     <ScrollView mt={16} flex={1} px={8} showsVerticalScrollIndicator={false}>
       <VStack>
@@ -58,7 +66,7 @@ export function Consumo() {
           data={data}
           keyExtractor={(item, index): any => index}
           renderItem={({ item }) => (
-            <ItemCard itemName="Geladeira" />
+            <ItemCard onPress={handleNavigateToDetails} itemName="Geladeira" />
           )}
         />
 

@@ -13,6 +13,7 @@ import { Dashboard } from '@screens/Dashboard'
 import { Economize } from '@screens/Economize'
 import { Consumo } from '@screens/Consumo'
 import { Ranking } from '@screens/Ranking'
+import { ConsumoDetail } from '@screens/ConsumoDetail'
 
 type StackAppRoutes = {
   welcome: undefined;
@@ -27,6 +28,7 @@ type TabAppRoutes = {
   economize: undefined;
   consumo: undefined;
   ranking: undefined;
+  consumoDetail: undefined;
 
 }
 
@@ -129,6 +131,14 @@ export function AppRoutes() {
               </Box>
 
             )
+          }}
+        />
+
+        <Tab.Screen
+          name="consumoDetail"
+          component={ConsumoDetail}
+          options={{
+            tabBarButton: () => null
           }}
         />
       </Tab.Navigator>
