@@ -1,8 +1,8 @@
-import { Box, Center, HStack, IconButton, Image, ScrollView, Text, VStack } from "native-base";
+import { Box, Center, HStack, Icon, IconButton, Image, ScrollView, Text, VStack } from "native-base";
 import { CircularProgressBar } from '@components/CircularProgress';
 import Refrigerator from '@assets/geladeira.png'
 import { MaterialIcons } from '@expo/vector-icons'
-
+import LogoSVG from '@assets/logo.svg'
 import { useToast } from 'native-base';
 import { TouchableOpacity } from "react-native";
 
@@ -16,19 +16,17 @@ export function Dashboard() {
       showsVerticalScrollIndicator={false}
       flex={1} mt={12} px={8} pb={12}
     >
-      <VStack >
+      <VStack>
 
-
-        <TouchableOpacity>
-          <Center>
-            <VStack mt={4} mb={4} alignItems="center">
-              <Image alt="profile" w={12} h={12} rounded="full" source={{ uri: 'https://github.com/guifuentes8.png' }} />
-              <Text mt={2} color="green.100" fontSize="md" fontFamily="audiowide">
-                Guilherme Fuentes
-              </Text>
-            </VStack>
-          </Center>
-        </TouchableOpacity>
+        <HStack mt={4} mb={4} alignItems="center" justifyContent="space-between">
+          <TouchableOpacity>
+            <Image alt="profile" w={12} h={12} rounded="full" source={{ uri: 'https://github.com/guifuentes8.png' }} />
+          </TouchableOpacity>
+          <Text mt={2} color="green.100" fontSize="md" fontFamily="audiowide">
+            Guilherme Fuentes
+          </Text>
+          <LogoSVG height={48} width={48} />
+        </HStack>
 
         <VStack flex={1} justifyContent="flex-start" alignItems="center">
           <Center>
@@ -87,7 +85,7 @@ export function Dashboard() {
                   onPress={() => toast.show({
                     maxWidth: 300,
                     title: 'Gasto esperado',
-                    description: 'Gráfico em relação ao preço médio da região sudeste de R$ 188,46.',
+                    description: 'Comparação ao custo médio da energia residencial na região sudeste (R$ 188,46).',
                     placement: 'top',
                     bgColor: "blue.600"
                   })}

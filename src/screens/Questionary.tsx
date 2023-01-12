@@ -16,72 +16,59 @@ import { NextButton } from "@components/NextButton";
 import { Button } from "@components/Button";
 import { useNavigation } from "@react-navigation/native";
 import { AppNavigatorStackRoutesProps } from "@routes/app.routes";
+import { SliderRange } from "@components/SliderRange";
 
-type QuestionProps = {
-  inputName: string;
-  titleQuestion: string;
-  src: ImageSourcePropType;
-  questionText: string;
-  itemText?: string;
-}
-
-type InputCurrencyProps = MaskedTextInputProps;
 
 export function Questionary() {
 
   const [step, setStep] = useState(0);
-  const [questionData, setQuestionData] = useState<QuestionProps[]>([])
+  const [inputValue, setInputValue] = useState(1);
+  const [formData, setFormData] = useState<any>({})
 
   const { control, handleSubmit } = useForm();
 
   const navigation = useNavigation<AppNavigatorStackRoutesProps>();
 
+  const questionData = [{
+    titleQuestion: 'Questão 1',
+    src: Coins,
+    questionText: 'Quanto você paga na sua conta de energia?',
+  },
+  {
+    titleQuestion: 'Questão 2',
+    src: Residents,
+    questionText: 'Quantos moradores residem contando com você?',
+  },
+  {
+    titleQuestion: 'Questão 3',
+    src: Comfort,
+    questionText: 'Quantos cômodos sua casa possui?',
+  }]
+
   function handleQuestionaryForm(data: any) {
+    setFormData(data)
 
     if (step + 1 > 2)
       return goToItemQuestionary()
+
     setStep(prevState => prevState + 1)
   }
-
-  useEffect(() => {
-    setQuestionData([{
-      inputName: 'energyBill',
-      titleQuestion: 'Questão 1',
-      src: Coins,
-      questionText: 'Quanto você paga na sua conta de energia?',
-    },
-    {
-      inputName: 'residents',
-      titleQuestion: 'Questão 2',
-      src: Residents,
-      questionText: 'Quantos moradores residem contando com você?',
-    },
-    {
-      inputName: 'comforts',
-      titleQuestion: 'Questão 3',
-      src: Comfort,
-      questionText: 'Quantos cômodos sua casa possui?',
-    },
-
-    ])
-  }, [])
 
   function goToItemQuestionary() {
     navigation.navigate('questionaryItem')
   }
 
   useEffect(() => {
-
-
+    setInputValue(1)
   }, [step])
 
-  return (
-    <ScrollView flex={1} mt={12} px={8} pb={4} contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+  console.log(formData)
 
-      <VStack >
+  return (
+    <ScrollView flex={1} mt={12} pb={4} contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+      <VStack flex={1} px={8}>
 
         {questionData.length > 0 &&
-
           <>
             <QuestionaryHeader
               titleQuestion={questionData[step]?.titleQuestion}
@@ -92,11 +79,15 @@ export function Questionary() {
 
             {step === 0 &&
               <Controller
+                defaultValue={0}
                 control={control}
-                name={questionData[step]?.inputName}
+                name="energyBill"
                 render={({ field: { onChange } }) => (
                   <MaskedTextInput
-                    onChangeText={(text, rawText) => onChange(String(Number(rawText) / 100))}
+                    onChangeText={(text, rawText) => {
+                      onChange(String(Number(rawText) / 100))
+                    }
+                    }
                     type="currency"
                     options={{
                       prefix: 'R$ ',
@@ -110,19 +101,45 @@ export function Questionary() {
 
                 )}
               />}
-
           </>
         }
 
-        {questionData.length > 0 && step > 0 &&
+        {questionData.length > 0 && step === 1 &&
           <Controller
+            defaultValue={1}
+            key="residents"
             control={control}
-            name="oi"
+            name="residents"
             render={({ field: { onChange } }) => (
-              <InputQuestionary
-                isRequired
-                onChangeText={onChange}
-                placeholder="1"
+              <SliderRange
+                onChange={(v) => {
+                  setInputValue(v)
+                  onChange(v)
+                }}
+                value={formData.residents ? formData.residents : inputValue}
+                myValue={formData.residents ? formData.residents : inputValue}
+                min={1}
+                max={10}
+              />
+            )}
+          />
+        }
+        {questionData.length > 0 && step === 2 &&
+          <Controller
+            defaultValue={1}
+            key="comforts"
+            control={control}
+            name="comforts"
+            render={({ field: { onChange } }) => (
+              <SliderRange
+                onChange={(v) => {
+                  setInputValue(v)
+                  onChange(v)
+                }}
+                value={formData.comforts ? formData.comforts : inputValue}
+                myValue={formData.comforts ? formData.comforts : inputValue}
+                min={1}
+                max={10}
               />
             )}
           />

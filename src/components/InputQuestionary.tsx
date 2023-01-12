@@ -1,8 +1,5 @@
 import { Input as NativeBaseInput, IInputProps, FormControl } from 'native-base';
 
-
-import { MaskedTextInput, MaskedTextInputProps } from "react-native-mask-text";
-
 type Props = IInputProps & {
   errorMessage?: string | null;
   isInvalid?: boolean;
@@ -14,7 +11,6 @@ export function InputQuestionary({ errorMessage = null, isInvalid = false, ...re
 
   return (
     <FormControl isInvalid={isInvalid}>
-
 
       <NativeBaseInput
         h={16}

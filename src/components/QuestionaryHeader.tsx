@@ -44,6 +44,7 @@ export function QuestionaryHeader({ titleQuestion, srcImage, questionText = '', 
         fontFamily="medium"
         fontSize="32px"
         color="green.100"
+        mb={6}
       >
         {questionText}
       </Text>

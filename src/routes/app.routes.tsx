@@ -3,55 +3,58 @@ import { Platform } from 'react-native'
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { createBottomTabNavigator, BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 
-import { CurrencyCircleDollar } from 'phosphor-react-native'
+import { CaretCircleDoubleUp, CurrencyCircleDollar, Lightbulb } from 'phosphor-react-native'
 
 import { Questionary } from '@screens/Questionary'
 import { Welcome } from '@screens/Welcome'
 import { Box, Icon, useTheme } from 'native-base';
 import { QuestionaryItem } from '@screens/QuestionaryItem'
 import { Dashboard } from '@screens/Dashboard'
+import { Economize } from '@screens/Economize'
+import { Consumo } from '@screens/Consumo'
+import { Ranking } from '@screens/Ranking'
 
 type StackAppRoutes = {
   welcome: undefined;
   questionary: undefined;
   questionaryItem: undefined;
-  tabDashboard: undefined;
+  dashboardTab: undefined;
 
 }
 
 type TabAppRoutes = {
   dashboard: undefined;
-  dash: undefined;
+  economize: undefined;
+  consumo: undefined;
+  ranking: undefined;
 
 }
 
 export type AppNavigatorStackRoutesProps = NativeStackNavigationProp<StackAppRoutes>;
 export type AppNavigatorTabRoutesProps = BottomTabNavigationProp<TabAppRoutes>;
 
-
 export function AppRoutes() {
 
   const { sizes, colors } = useTheme()
+  const iconSize = 9;
 
   const Stack = createNativeStackNavigator<StackAppRoutes>();
   const Tab = createBottomTabNavigator<TabAppRoutes>();
 
 
-  function TabDashboard() {
+  function TabRoute() {
     return (
       <Tab.Navigator screenOptions={{
         headerShown: false,
-        tabBarShowLabel: true,
+        tabBarShowLabel: false,
         tabBarActiveTintColor: colors.green[500],
         tabBarInactiveTintColor: colors.gray[200],
         tabBarStyle: {
-
           backgroundColor: colors.green[800],
           borderTopWidth: 0,
           height: Platform.OS === "android" ? 'auto' : 96,
-          paddingBottom: sizes[16],
-          paddingTop: sizes[4],
-          paddingHorizontal: sizes[4],
+          paddingBottom: sizes[10],
+          paddingTop: sizes[8]
         }
       }}
       >
@@ -59,17 +62,25 @@ export function AppRoutes() {
           name="dashboard"
           component={Dashboard}
           options={{
-            tabBarButton: () => (
+            tabBarButton: () => null
+          }}
+        />
+
+        <Tab.Screen
+          name="economize"
+          component={Economize}
+          options={{
+            tabBarIcon: () => (
               <Box
                 bg="green.100"
                 alignItems="center"
                 justifyContent="center"
                 rounded="full"
-                width={12}
-                height={12}
+                width={iconSize}
+                height={iconSize}
               >
                 <Icon
-                  as={<CurrencyCircleDollar color={colors.green[900]} weight="regular" size={40} />}
+                  as={<CurrencyCircleDollar color={colors.green[900]} weight="regular" size={32} />}
                 />
               </Box>
 
@@ -77,27 +88,48 @@ export function AppRoutes() {
           }}
         />
         <Tab.Screen
-          name="dash"
-          component={Dashboard}
+          name="consumo"
+          component={Consumo}
           options={{
-
-            tabBarButton: () => (
+            tabBarIcon: () => (
               <Box
                 bg="green.100"
                 alignItems="center"
                 justifyContent="center"
                 rounded="full"
-                width={12}
-                height={12}
+                width={iconSize}
+                height={iconSize}
               >
                 <Icon
-                  as={<CurrencyCircleDollar color={colors.green[900]} weight="regular" size={40} />}
+                  as={<Lightbulb color={colors.green[900]} weight="regular" size={32} />}
                 />
               </Box>
 
             )
           }}
         />
+        <Tab.Screen
+          name="ranking"
+          component={Ranking}
+          options={{
+            tabBarIcon: () => (
+              <Box
+                bg="green.100"
+                alignItems="center"
+                justifyContent="center"
+                rounded="full"
+                width={iconSize}
+                height={iconSize}
+              >
+                <Icon
+                  as={<CaretCircleDoubleUp color={colors.green[900]} weight="regular" size={32} />}
+                />
+              </Box>
+
+            )
+          }}
+        />
+
 
       </Tab.Navigator>
     )
@@ -114,15 +146,15 @@ export function AppRoutes() {
         <Stack.Screen
           name="questionary"
           component={Questionary}
-        />
-        <Stack.Screen
+        /> */}
+        {/* <Stack.Screen
           name="questionaryItem"
           component={QuestionaryItem}
         /> */}
 
         <Stack.Screen
-          name="tabDashboard"
-          component={TabDashboard}
+          name="dashboardTab"
+          component={TabRoute}
 
         />
 

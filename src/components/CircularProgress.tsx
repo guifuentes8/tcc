@@ -11,7 +11,7 @@ type Props = CircularProgressBaseProps & {
 
 export function CircularProgressBar({ children, strokeSize, radius = 80, maxValue, sourceImg = undefined, circularProgressValue = 0, ...rest }: Props) {
 
-  const { colors, fonts } = useTheme()
+  const { colors } = useTheme()
 
   const size = radius / 1.3
 
@@ -39,8 +39,8 @@ export function CircularProgressBar({ children, strokeSize, radius = 80, maxValu
           inActiveStrokeColor={colors.green[800]}
           progressValueColor={colors.green[100]}
           titleColor={colors.green[100]}
-          title={'Kw / h'}
-          titleStyle={{ fontFamily: fonts.body }}
+          title={'Kw/h'}
+          titleStyle={{ fontFamily: 'Audiowide_400Regular' }}
         />
       }
       {circularProgressValue === 0 &&
