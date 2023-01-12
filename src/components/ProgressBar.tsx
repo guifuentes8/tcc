@@ -2,10 +2,10 @@ import { Progress, Text, useTheme, VStack } from "native-base";
 
 type Props = {
   percentage: number;
-  nameUser: string;
+  title: string;
 }
 
-export function ProgressBar({ nameUser, percentage }: Props) {
+export function ProgressBar({ title, percentage }: Props) {
 
   const { colors } = useTheme()
 
@@ -16,10 +16,11 @@ export function ProgressBar({ nameUser, percentage }: Props) {
         fontSize="lg"
         color="green.100"
       >
-        Usuário: {nameUser}
+        {title}
       </Text>
       <Progress
-        my={6}
+        mb={6}
+        mt={1}
         bg="green.800"
         size="lg"
         _filledTrack={{ bg: colors.green[100], rounded: 12 }}

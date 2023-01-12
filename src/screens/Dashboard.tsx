@@ -14,9 +14,9 @@ export function Dashboard() {
     <ScrollView
       contentContainerStyle={{ flexGrow: 1 }}
       showsVerticalScrollIndicator={false}
-      flex={1} mt={12} px={8} pb={12}
+      flex={1} mt={12} px={8}
     >
-      <VStack>
+      <VStack flex={1}>
 
         <HStack mt={4} mb={4} alignItems="center" justifyContent="space-between">
           <TouchableOpacity>
@@ -30,12 +30,23 @@ export function Dashboard() {
 
         <VStack flex={1} justifyContent="flex-start" alignItems="center">
           <Center>
-            <Text color="green.100" mb={3} fontSize="xl" fontFamily="audiowide">Consumo total</Text>
+            <Text color="green.100" mb={3} textAlign="center" fontSize="xl" fontFamily="audiowide">Dashboard</Text>
             <CircularProgressBar
               radius={125}
               maxValue={100}
               circularProgressValue={30}
               strokeSize={9} />
+            <Box mt={2} alignItems="center" h={4} w={4} justifyContent="center" >
+              <IconButton
+                onPress={() => toast.show({
+                  maxWidth: 300,
+                  title: 'Gasto esperado',
+                  description: 'Comparação ao consumo médio da energia residencial na região sudeste (172,9 kWh/mês).',
+                  placement: 'top',
+                  bgColor: "blue.600"
+                })}
+                size={4} h={8} w={8} _pressed={{ bgColor: 'transparent' }} _icon={{ as: MaterialIcons, name: 'info-outline', color: 'green.100', size: 5 }} />
+            </Box>
           </Center>
 
           <HStack mt={4} justifyContent="space-between">
@@ -63,22 +74,27 @@ export function Dashboard() {
                     placement: 'top',
                     bgColor: "blue.600"
                   })}
-                  size={1} h={4} w={4} _pressed={{ bgColor: 'transparent' }} _icon={{ as: MaterialIcons, name: 'help', color: 'green.100' }} />
+                  size={1} h={4} w={4} _pressed={{ bgColor: 'transparent' }} _icon={{ as: MaterialIcons, name: 'info-outline', color: 'green.100', size: 5 }} />
               </Box>
-              <Text mb={4} fontSize="xs" textAlign="center" fontFamily="regular" color="gray.400">A % é comparada com o total da residência.</Text>
             </Center>
 
 
             <Center w={40}>
+              {/* <Text fontSize="xs" textAlign="center" fontFamily="regular" color="gray.400">Mês anterior: R$ 400,00</Text> */}
+
               <Text mb={2} color="green.100" fontSize="md" textAlign="center" fontFamily="semibold">Gasto esperado</Text>
+
               <CircularProgressBar
                 radius={70}
                 maxValue={189}
                 value={180}
                 strokeSize={5}
               >
+
                 R$ 180,00
+
               </CircularProgressBar>
+
               <Box mt={2} alignItems="center" h={4} w={4} justifyContent="center" >
                 <IconButton
                   onPress={() => toast.show({
@@ -88,15 +104,17 @@ export function Dashboard() {
                     placement: 'top',
                     bgColor: "blue.600"
                   })}
-                  size={1} h={4} w={4} _pressed={{ bgColor: 'transparent' }} _icon={{ as: MaterialIcons, name: 'help', color: 'green.100' }} />
+                  size={16}
+                  _pressed={{ bgColor: 'transparent' }}
+                  _icon={{ as: MaterialIcons, name: 'info-outline', color: 'green.100', size: 5 }}
+                />
               </Box>
-              <Text mb={4} fontSize="xs" textAlign="center" fontFamily="regular" color="gray.400">Mês anterior:{'\n'}R$ 400,00</Text>
             </Center>
 
           </HStack>
         </VStack>
       </VStack >
-    </ScrollView>
+    </ScrollView >
 
   )
 }

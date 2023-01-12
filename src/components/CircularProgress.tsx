@@ -18,7 +18,7 @@ type Props = {
 export function CircularProgressBar({
   children,
   value = 100,
-  title = 'Kw/h',
+  title = 'Kwh/mês',
   strokeSize,
   radius = 80,
   maxValue,

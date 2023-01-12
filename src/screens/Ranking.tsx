@@ -1,5 +1,6 @@
 import { HeaderActionsUser } from "@components/HeaderActionsUser";
 import { ProgressBar } from "@components/ProgressBar";
+import { SelectInput } from "@components/SelectInput";
 import { SectionList, Text, useTheme, VStack } from "native-base";
 
 export function Ranking() {
@@ -35,7 +36,8 @@ export function Ranking() {
   ]
   return (
     <VStack mt={16} flex={1} px={8} >
-      <HeaderActionsUser title="Ranking de consumo!" subtitle="Este são os usuários que mais se destacaram no mês!" />
+      <HeaderActionsUser title="Ranking" subtitle="Este são os usuários que mais se destacaram nesse mês!" />
+      <SelectInput />
       <SectionList
         showsVerticalScrollIndicator={false}
         w="100%"
@@ -44,7 +46,7 @@ export function Ranking() {
         keyExtractor={(item: any) => item.id}
         renderSectionHeader={({ section }) => <Text fontSize="xl" fontFamily="medium" color="green.100">{section.title}</Text>}
         renderItem={({ item }) => (
-          <ProgressBar percentage={item.percentage} nameUser="Guilherme Fuentes" />
+          <ProgressBar percentage={item.percentage} title="Morador: Guilherme Fuentes" />
         )}
       />
 

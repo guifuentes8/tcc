@@ -38,6 +38,15 @@ export const THEME = extendTheme({
   },
 
   components: {
+    Select: {
+      baseStyle: () => {
+        return {
+          _customDropdownIconProps: {
+            color: "green.100",
+          },
+        };
+      },
+    },
     SliderThumb: {
       defaultProps: {
         colorScheme: "green.200",
