@@ -1,15 +1,31 @@
 import { Image, Text, useTheme, View, VStack } from "native-base";
+import { ReactNode } from "react";
 import { ImageSourcePropType } from "react-native";
 import CircularProgress, { CircularProgressBase } from 'react-native-circular-progress-indicator';
 import { CircularProgressBaseProps } from "react-native-circular-progress-indicator/lib/typescript/types";
 
-type Props = CircularProgressBaseProps & {
+type Props = {
+  radius: number;
   strokeSize: number;
   circularProgressValue?: number;
   sourceImg?: ImageSourcePropType;
+  title?: string;
+  maxValue?: number;
+  value?: number;
+  children?: ReactNode;
 }
 
-export function CircularProgressBar({ children, strokeSize, radius = 80, maxValue, sourceImg = undefined, circularProgressValue = 0, ...rest }: Props) {
+export function CircularProgressBar({
+  children,
+  value = 100,
+  title = 'Kw/h',
+  strokeSize,
+  radius = 80,
+  maxValue,
+  sourceImg = undefined,
+  circularProgressValue = 0,
+  ...rest
+}: Props) {
 
   const { colors } = useTheme()
 
@@ -17,9 +33,10 @@ export function CircularProgressBar({ children, strokeSize, radius = 80, maxValu
 
   return (
     <CircularProgressBase
-      radius={radius}
+      value={value}
       maxValue={maxValue}
-      duration={2000}
+      radius={radius}
+      duration={3000}
       activeStrokeWidth={circularProgressValue !== 0 ? 0 : strokeSize}
       activeStrokeColor={colors.green[100]}
       inActiveStrokeWidth={circularProgressValue !== 0 ? 0 : strokeSize}
@@ -32,14 +49,15 @@ export function CircularProgressBar({ children, strokeSize, radius = 80, maxValu
           radius={radius}
           maxValue={maxValue}
           value={circularProgressValue}
-          duration={2000}
+          valueSuffix={title.length === 0 ? '%' : ''}
+          duration={3000}
           activeStrokeWidth={strokeSize}
           activeStrokeColor={colors.green[100]}
           inActiveStrokeWidth={strokeSize}
           inActiveStrokeColor={colors.green[800]}
           progressValueColor={colors.green[100]}
           titleColor={colors.green[100]}
-          title={'Kw/h'}
+          title={title}
           titleStyle={{ fontFamily: 'Audiowide_400Regular' }}
         />
       }
@@ -48,7 +66,7 @@ export function CircularProgressBar({ children, strokeSize, radius = 80, maxValu
           {sourceImg && <Image
             w={size}
             h={size}
-            alt='oi'
+            alt='Imagem do item'
             source={sourceImg}
           />
           }

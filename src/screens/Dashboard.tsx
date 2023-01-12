@@ -34,7 +34,6 @@ export function Dashboard() {
             <CircularProgressBar
               radius={125}
               maxValue={100}
-              value={100}
               circularProgressValue={30}
               strokeSize={9} />
           </Center>

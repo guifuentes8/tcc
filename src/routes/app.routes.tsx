@@ -129,8 +129,6 @@ export function AppRoutes() {
             )
           }}
         />
-
-
       </Tab.Navigator>
     )
   }
@@ -146,8 +144,8 @@ export function AppRoutes() {
         <Stack.Screen
           name="questionary"
           component={Questionary}
-        /> */}
-        {/* <Stack.Screen
+        />
+        <Stack.Screen
           name="questionaryItem"
           component={QuestionaryItem}
         /> */}
