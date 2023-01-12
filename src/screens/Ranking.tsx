@@ -9,27 +9,27 @@ export function Ranking() {
 
   const data = [
     {
-      title: "1º lugar - 70%",
+      title: "1º lugar",
       data: [{ id: 1, percentage: 70 }]
     },
     {
-      title: "2º lugar - 30%",
+      title: "2º lugar ",
       data: [{ id: 2, percentage: 30 }]
     },
     {
-      title: "2º lugar - 30%",
+      title: "2º lugar",
       data: [{ id: 2, percentage: 30 }]
     },
     {
-      title: "2º lugar - 30%",
+      title: "2º lugar %",
       data: [{ id: 2, percentage: 30 }]
     },
     {
-      title: "2º lugar - 30%",
+      title: "2º lugar",
       data: [{ id: 2, percentage: 30 }]
     },
     {
-      title: "2º lugar - 30%",
+      title: "2º lugar",
       data: [{ id: 2, percentage: 30 }]
     },
 
@@ -46,7 +46,7 @@ export function Ranking() {
         keyExtractor={(item: any) => item.id}
         renderSectionHeader={({ section }) => <Text fontSize="xl" fontFamily="medium" color="green.100">{section.title}</Text>}
         renderItem={({ item }) => (
-          <ProgressBar percentage={item.percentage} title="Morador: Guilherme Fuentes" />
+          <ProgressBar textInsideProgressBar="30%" percentage={item.percentage} title="Morador: Guilherme Fuentes" />
         )}
       />
 

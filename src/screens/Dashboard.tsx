@@ -52,7 +52,7 @@ export function Dashboard() {
           <HStack mt={4} justifyContent="space-between">
 
             <Center w={40}>
-              <Text mb={2} color="green.100" fontSize="md" textAlign="center" fontFamily="semibold">Maior consumo</Text>
+              <Text mb={2} color="green.100" fontSize="lg" textAlign="center" fontFamily="semibold">Item que mais consome</Text>
               <CircularProgressBar
                 radius={70}
                 maxValue={100}
@@ -82,7 +82,7 @@ export function Dashboard() {
             <Center w={40}>
               {/* <Text fontSize="xs" textAlign="center" fontFamily="regular" color="gray.400">Mês anterior: R$ 400,00</Text> */}
 
-              <Text mb={2} color="green.100" fontSize="md" textAlign="center" fontFamily="semibold">Gasto esperado</Text>
+              <Text mb={2} color="green.100" fontSize="lg" textAlign="center" fontFamily="semibold">Gasto esperado do mês</Text>
 
               <CircularProgressBar
                 radius={70}

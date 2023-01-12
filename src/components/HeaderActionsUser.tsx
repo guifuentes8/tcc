@@ -24,7 +24,7 @@ export function HeaderActionsUser({ title, subtitle }: Props) {
     <VStack mb={8}>
       <HStack justifyContent="space-between" alignItems="center">
         <TouchableOpacity onPress={handleNavigateToDashboard}>
-          <House color={colors.green[100]} size={40} />
+          <House color={colors.green[100]} size={32} />
         </TouchableOpacity>
         <Text mt={2} color="green.100" fontSize="md" fontFamily="audiowide">
           Guilherme Fuentes
