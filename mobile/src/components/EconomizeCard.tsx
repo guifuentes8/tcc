@@ -1,10 +1,14 @@
 import { HStack, Image, Text, VStack } from "native-base";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, TouchableOpacityProps } from "react-native";
 import { CircularProgressBar } from "./CircularProgress";
 
-export function EconomizeCard() {
+type Props = TouchableOpacityProps & {
+
+}
+
+export function EconomizeCard({ ...rest }: Props) {
   return (
-    <TouchableOpacity>
+    <TouchableOpacity {...rest}>
       <HStack justifyContent="space-between" bg="green.800" w="full" h={20} px={4} py={2} my={2} rounded="md">
         <HStack alignItems="center">
           <Image
@@ -19,7 +23,7 @@ export function EconomizeCard() {
           </VStack>
         </HStack>
 
-        <CircularProgressBar maxValue={100} radius={30} title="" circularProgressValue={30} strokeSize={4} />
+        <CircularProgressBar maxValue={100} radius={30} title="" valueSuffix="%" circularProgressValue={30} bgChange strokeSize={4} />
       </HStack>
     </TouchableOpacity>
   )

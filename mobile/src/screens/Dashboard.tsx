@@ -5,6 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 import LogoSVG from '@assets/logo.svg'
 import { useToast } from 'native-base';
 import { TouchableOpacity } from "react-native";
+import { HeaderActionsUser } from "@components/HeaderActionsUser";
 
 export function Dashboard() {
 
@@ -16,21 +17,11 @@ export function Dashboard() {
       showsVerticalScrollIndicator={false}
       flex={1} mt={12} px={8}
     >
-      <VStack flex={1}>
-
-        <HStack mt={4} mb={4} alignItems="center" justifyContent="space-between">
-          <TouchableOpacity>
-            <Image alt="profile" w={12} h={12} rounded="full" source={{ uri: 'https://github.com/guifuentes8.png' }} />
-          </TouchableOpacity>
-          <Text mt={2} color="green.100" fontSize="md" fontFamily="audiowide">
-            Guilherme Fuentes
-          </Text>
-          <LogoSVG height={48} width={48} />
-        </HStack>
-
+      <VStack flex={1} pb={10}>
+        <HeaderActionsUser title="Dashboard" subtitle="" profile />
         <VStack flex={1} justifyContent="flex-start" alignItems="center">
           <Center>
-            <Text color="green.100" mb={3} textAlign="center" fontSize="xl" fontFamily="audiowide">Dashboard</Text>
+            <Text color="green.100" my={4} textAlign="center" fontSize="xl" fontFamily="audiowide">Dashboard</Text>
             <CircularProgressBar
               radius={125}
               maxValue={100}
@@ -40,6 +31,7 @@ export function Dashboard() {
               <IconButton
                 onPress={() => toast.show({
                   maxWidth: 300,
+                  minWidth: 300,
                   title: 'Gasto esperado',
                   description: 'Comparação ao consumo médio da energia residencial na região sudeste (172,9 kWh/mês).',
                   placement: 'top',
@@ -69,6 +61,7 @@ export function Dashboard() {
                 <IconButton
                   onPress={() => toast.show({
                     maxWidth: 300,
+                    minWidth: 300,
                     title: 'Maior consumo',
                     description: 'Este é o item que mais consome energia em sua residência.',
                     placement: 'top',
@@ -99,6 +92,7 @@ export function Dashboard() {
                 <IconButton
                   onPress={() => toast.show({
                     maxWidth: 300,
+                    minWidth: 300,
                     title: 'Gasto esperado',
                     description: 'Comparação ao custo médio da energia residencial na região sudeste (R$ 188,46).',
                     placement: 'top',

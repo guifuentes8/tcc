@@ -15,10 +15,12 @@ type Props = {
   children?: ReactNode;
   valuePrefix?: string;
   valueSuffix?: string;
+  bgChange?: boolean;
 }
 
 export function CircularProgressBar({
   children,
+  bgChange = false,
   value = 100,
   valuePrefix = '',
   valueSuffix = '',
@@ -59,7 +61,7 @@ export function CircularProgressBar({
           activeStrokeWidth={strokeSize}
           activeStrokeColor={colors.green[100]}
           inActiveStrokeWidth={strokeSize}
-          inActiveStrokeColor={colors.green[800]}
+          inActiveStrokeColor={!bgChange ? colors.green[800] : colors.gray[500]}
           progressValueColor={colors.green[100]}
           titleColor={colors.green[100]}
           title={title}

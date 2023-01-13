@@ -29,6 +29,7 @@ type TabAppRoutes = {
   consumo: undefined;
   ranking: undefined;
   consumoDetail: undefined;
+  questionaryItemEdit: undefined;
 
 }
 
@@ -39,6 +40,7 @@ export function AppRoutes() {
 
   const { sizes, colors } = useTheme()
   const iconSize = 9;
+  const hasQuestionary = false
 
   const Stack = createNativeStackNavigator<StackAppRoutes>();
   const Tab = createBottomTabNavigator<TabAppRoutes>();
@@ -54,8 +56,8 @@ export function AppRoutes() {
         tabBarStyle: {
           backgroundColor: colors.green[800],
           borderTopWidth: 0,
-          borderTopLeftRadius: 48,
-          borderTopRightRadius: 48,
+          borderTopLeftRadius: 32,
+          borderTopRightRadius: 32,
           height: Platform.OS === "android" ? 'auto' : 96,
           paddingBottom: sizes[8],
           paddingTop: sizes[8]
@@ -141,6 +143,13 @@ export function AppRoutes() {
             tabBarButton: () => null
           }}
         />
+        <Tab.Screen
+          name="questionaryItemEdit"
+          component={QuestionaryItem}
+          options={{
+            tabBarButton: () => null
+          }}
+        />
       </Tab.Navigator>
     )
   }
@@ -148,19 +157,23 @@ export function AppRoutes() {
   function QuestionaryRoute() {
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {/* <Stack.Screen
-          name="welcome"
-          component={Welcome}
-        />
+        {hasQuestionary &&
+          <>
+            <Stack.Screen
+              name="welcome"
+              component={Welcome}
+            />
 
-        <Stack.Screen
-          name="questionary"
-          component={Questionary}
-        />
-        <Stack.Screen
-          name="questionaryItem"
-          component={QuestionaryItem}
-        /> */}
+            <Stack.Screen
+              name="questionary"
+              component={Questionary}
+            />
+            <Stack.Screen
+              name="questionaryItem"
+              component={QuestionaryItem}
+            />
+          </>
+        }
 
         <Stack.Screen
           name="dashboardTab"

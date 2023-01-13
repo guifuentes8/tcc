@@ -1,4 +1,4 @@
-import { Input as NativeBaseInput, IInputProps, FormControl, Icon } from 'native-base';
+import { Input as NativeBaseInput, IInputProps, FormControl, Icon, Text } from 'native-base';
 import { MaterialIcons } from '@expo/vector-icons'
 
 type Props = IInputProps & {
@@ -12,12 +12,11 @@ export function Input({ errorMessage = null, size = 12, isInvalid, iconName = ''
 
   return (
 
-    <FormControl isInvalid={isInvalid}>
+    <FormControl isInvalid={invalid} mb={4}>
       <NativeBaseInput
-        h={12}
-        my={3}
+        h={16}
         borderWidth={1}
-        fontSize="sm"
+        fontSize="md"
         fontFamily="regular"
         borderColor="green.100"
         color={invalid ? "red.500" : "green.100"}
@@ -33,8 +32,9 @@ export function Input({ errorMessage = null, size = 12, isInvalid, iconName = ''
           />
         }
         _invalid={{
-          borderWidth: 2,
-          borderColor: 'red.700'
+          borderWidth: 1,
+          borderColor: 'red.500',
+
         }}
         _focus={{
           bgColor: "green.800",
@@ -43,7 +43,9 @@ export function Input({ errorMessage = null, size = 12, isInvalid, iconName = ''
         {...rest}
       />
       <FormControl.ErrorMessage>
-        {errorMessage}
+        <Text fontSize="sm" color="red.500">
+          {errorMessage}
+        </Text>
       </FormControl.ErrorMessage>
     </FormControl>
   )
