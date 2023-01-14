@@ -3,9 +3,10 @@ import { Text, Center, VStack, useTheme, HStack, Image } from "native-base";
 import { House, SignOut } from 'phosphor-react-native'
 import LogoSVG from '@assets/logo.svg'
 import { useNavigation } from "@react-navigation/native";
-import { AppNavigatorTabRoutesProps } from "@routes/app.routes";
+import { AppNavigatorStackRoutesProps, AppNavigatorTabRoutesProps } from "@routes/app.routes";
 import { useAuth } from "@hooks/useAuth";
 import userPhotoDefault from '@assets/userPhotoDefault.png'
+import { api } from "@services/api";
 
 
 type Props = {
@@ -21,7 +22,12 @@ export function HeaderActionsUser({ title, subtitle, profile = false }: Props) {
 
 
   const navigation = useNavigation<AppNavigatorTabRoutesProps>()
+  const navigationStack = useNavigation<AppNavigatorStackRoutesProps>()
 
+
+  function handleNavigateToProfile() {
+    navigationStack.navigate("profile")
+  }
   function handleNavigateToDashboard() {
     navigation.navigate("dashboard")
   }
@@ -29,9 +35,10 @@ export function HeaderActionsUser({ title, subtitle, profile = false }: Props) {
   return (
     <VStack mb={profile ? 0 : 8}>
       <HStack justifyContent="space-between" alignItems="center">
-        <TouchableOpacity onPress={handleNavigateToDashboard}>
+        <TouchableOpacity onPress={profile ? handleNavigateToProfile : handleNavigateToDashboard}>
           {profile ?
-            <Image alt="profile" w={12} h={12} rounded="full" source={user.avatar ? user.avatar : userPhotoDefault} />
+            <Image alt="Imagem do usuário" w={12} h={12} rounded="full"
+              source={user.avatar ? { uri: `${api.defaults.baseURL}/avatar/${user.avatar}` } : userPhotoDefault} />
             :
             <House color={colors.green[100]} size={32} />}
 

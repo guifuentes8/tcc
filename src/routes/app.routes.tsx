@@ -14,12 +14,14 @@ import { Economize } from '@screens/Economize'
 import { Consumo } from '@screens/Consumo'
 import { Ranking } from '@screens/Ranking'
 import { ConsumoDetail } from '@screens/ConsumoDetail'
+import { Profile } from '@screens/Profile'
 
 type StackAppRoutes = {
   welcome: undefined;
   questionary: undefined;
   questionaryItem: undefined;
   dashboardTab: undefined;
+  profile: undefined;
 
 }
 
@@ -150,7 +152,10 @@ export function AppRoutes() {
             tabBarButton: () => null
           }}
         />
+
       </Tab.Navigator>
+
+
     )
   }
 
@@ -179,6 +184,11 @@ export function AppRoutes() {
           name="dashboardTab"
           component={TabRoute}
 
+        />
+
+        <Stack.Screen
+          name="profile"
+          component={Profile}
         />
 
       </Stack.Navigator>

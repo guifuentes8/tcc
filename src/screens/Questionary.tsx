@@ -62,7 +62,6 @@ export function Questionary() {
     setInputValue(1)
   }, [step])
 
-  console.log(formData)
 
   return (
     <ScrollView flex={1} mt={12} pb={4} contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>

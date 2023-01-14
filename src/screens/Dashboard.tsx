@@ -2,10 +2,9 @@ import { Box, Center, HStack, Icon, IconButton, Image, ScrollView, Text, VStack 
 import { CircularProgressBar } from '@components/CircularProgress';
 import Refrigerator from '@assets/geladeira.png'
 import { MaterialIcons } from '@expo/vector-icons'
-import LogoSVG from '@assets/logo.svg'
 import { useToast } from 'native-base';
-import { TouchableOpacity } from "react-native";
 import { HeaderActionsUser } from "@components/HeaderActionsUser";
+
 
 export function Dashboard() {
 

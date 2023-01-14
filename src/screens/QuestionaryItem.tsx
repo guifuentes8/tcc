@@ -200,7 +200,6 @@ export function QuestionaryItem() {
     setDayByMonthValue(0)
     setDayByWeekValue(0)
 
-    console.log(questionaryForm)
 
     setFormData(questionaryForm)
     if (step === 15) {
@@ -224,12 +223,12 @@ export function QuestionaryItem() {
   return (
     <ScrollView
       ref={ref}
-      mt={12} pb={4}
+      mt={12}
       contentContainerStyle={{ flexGrow: 1 }}
       showsVerticalScrollIndicator={false}
     >
 
-      <VStack px={8}>
+      <VStack px={8} flex={1}>
         {questionData.length > 0 &&
           <>
             <Center mb={6}>
@@ -295,138 +294,141 @@ export function QuestionaryItem() {
                   setIsButtonSelected(!isButtonSelected)
                 }}
               />
-
-
             </HStack>
             {!isButtonSelected &&
-              <VStack>
-                <HStack>
-                  <Center flexDirection="row" ml={-2}>
-                    <Icon mr={1} as={MaterialIcons} name="schedule" size={6} color="green.100" />
-                    <AskQuestionText question="Horas:" />
-                  </Center>
+              <>
+                <VStack>
+                  <HStack>
+                    <Center flexDirection="row" ml={-2}>
+                      <Icon mr={1} as={MaterialIcons} name="schedule" size={6} color="green.100" />
+                      <AskQuestionText question="Horas:" />
+                    </Center>
+                  </HStack>
+
+                  <Controller
+                    key="hour"
+                    control={control}
+                    name="hour"
+                    render={({ field: { value, onChange } }) => (
+                      <SliderRange
+                        mb={6}
+                        defaultValue={0}
+                        onChange={onChange}
+                        myValue={value}
+                        value={value}
+                        min={0}
+                        max={23}
+                      />
+                    )}
+                  />
+
+
+                  <HStack>
+                    <Center flexDirection="row" ml={-2}>
+                      <Icon mr={1} as={MaterialIcons} name="timer" size={6} color="green.100" />
+                      <AskQuestionText question="Minutos:" />
+                    </Center>
+                  </HStack>
+                  <Controller
+                    key='minutes'
+                    control={control}
+                    name="minutes"
+                    render={({ field: { value, onChange } }) => (
+                      <SliderRange
+                        mb={8}
+                        defaultValue={0}
+                        onChange={onChange}
+                        myValue={value}
+                        value={value}
+                        step={5}
+                        min={0}
+                        max={55}
+                      />
+                    )}
+                  />
+                </VStack>
+
+
+                <AskQuestionText question={questions[2]} />
+
+                <HStack justifyContent="space-between" my={6}>
+
+                  <Button
+                    fontSize="20px"
+                    w={33}
+                    title="Mensal"
+                    selected={isButtonFrequencySelected}
+                    onPress={() => {
+                      setIsButtonFrequencySelected(!isButtonFrequencySelected)
+                    }}
+                  />
+
+                  <Button
+                    fontSize="20px"
+                    w={33}
+                    title="Semanal"
+                    selected={!isButtonFrequencySelected}
+                    onPress={() => {
+                      setIsButtonFrequencySelected(!isButtonFrequencySelected)
+                    }}
+                  />
                 </HStack>
 
-                <Controller
-                  key="hour"
-                  control={control}
-                  name="hour"
-                  render={({ field: { value, onChange } }) => (
-                    <SliderRange
-                      mb={6}
-                      defaultValue={0}
-                      onChange={onChange}
-                      myValue={value}
-                      value={value}
-                      min={0}
-                      max={23}
-                    />
-                  )}
-                />
+                <Box mb={18}>
+                  <AskQuestionText question={`Quantidade de dias por ${isButtonFrequencySelected ? 'mês' : 'semana'} que você usa:`} />
+                </Box>
 
-                <HStack>
-                  <Center flexDirection="row" ml={-2}>
-                    <Icon mr={1} as={MaterialIcons} name="timer" size={6} color="green.100" />
-                    <AskQuestionText question="Minutos:" />
-                  </Center>
-                </HStack>
-                <Controller
-                  key='minutes'
-                  control={control}
-                  name="minutes"
-                  render={({ field: { value, onChange } }) => (
-                    <SliderRange
-                      mb={8}
-                      defaultValue={0}
-                      onChange={onChange}
-                      myValue={value}
-                      value={value}
-                      step={15}
-                      min={0}
-                      max={45}
-                    />
-                  )}
-                />
-              </VStack>
+                {isButtonFrequencySelected && (
+                  <Controller
+                    key="dayByMonth"
+                    control={control}
+                    name='dayByMonth'
+                    defaultValue={0}
+                    render={({ field: { onChange } }) => (
+                      <SliderRange
+                        onChange={(v) => {
+                          setDayByMonthValue(v)
+                          onChange(v)
+                        }}
+                        value={dayByMonthValue}
+                        myValue={dayByMonthValue}
+                        min={0}
+                        max={30}
+                      />
+                    )}
+                  />
+                )}
+
+                {!isButtonFrequencySelected && (
+                  <Controller
+                    key="dayByWeek"
+                    control={control}
+                    name='dayByWeek'
+                    defaultValue={0}
+                    render={({ field: { onChange } }) => (
+                      <SliderRange
+                        onChange={(v) => {
+                          setDayByWeekValue(v)
+                          onChange(v)
+                        }}
+                        value={dayByWeekValue}
+                        myValue={dayByWeekValue}
+                        min={0}
+                        max={7}
+                      />
+                    )}
+                  />
+                )}
+              </>
             }
-
-
-            <AskQuestionText question={questions[2]} />
-
-            <HStack justifyContent="space-between" my={6}>
-
-              <Button
-                fontSize="20px"
-                w={33}
-                title="Mensal"
-                selected={isButtonFrequencySelected}
-                onPress={() => {
-                  setIsButtonFrequencySelected(!isButtonFrequencySelected)
-                }}
-              />
-
-              <Button
-                fontSize="20px"
-                w={33}
-                title="Semanal"
-                selected={!isButtonFrequencySelected}
-                onPress={() => {
-                  setIsButtonFrequencySelected(!isButtonFrequencySelected)
-                }}
-              />
-            </HStack>
-
-            <Box mb={18}>
-              <AskQuestionText question={`Quantidade de dias por ${isButtonFrequencySelected ? 'mês' : 'semana'} que você usa:`} />
-            </Box>
-
-            {isButtonFrequencySelected && (
-              <Controller
-                key="dayByMonth"
-                control={control}
-                name='dayByMonth'
-                defaultValue={0}
-                render={({ field: { onChange } }) => (
-                  <SliderRange
-                    onChange={(v) => {
-                      setDayByMonthValue(v)
-                      onChange(v)
-                    }}
-                    value={dayByMonthValue}
-                    myValue={dayByMonthValue}
-                    min={0}
-                    max={30}
-                  />
-                )}
-              />
-            )}
-
-            {!isButtonFrequencySelected && (
-              <Controller
-                key="dayByWeek"
-                control={control}
-                name='dayByWeek'
-                defaultValue={0}
-                render={({ field: { onChange } }) => (
-                  <SliderRange
-                    onChange={(v) => {
-                      setDayByWeekValue(v)
-                      onChange(v)
-                    }}
-                    value={dayByWeekValue}
-                    myValue={dayByWeekValue}
-                    min={0}
-                    max={7}
-                  />
-                )}
-              />
-            )}
           </>
         }
-
-        <HStack flex={1} my={8} alignItems="center" justifyContent='space-between'>
+        <HStack flex={1} py={8} alignItems="flex-end" justifyContent='space-between'>
           {/* {step > 0 && <NextButton onPress={() => setStep(prevState => prevState - 1)} action="Anterior" icon="arrow-back" />} */}
-          <Button title="Pular" maxW={32} onPress={() => setStep((prev) => prev + 1)} />
+          <Button title="Pular" maxW={32} onPress={() => {
+            ref?.current?.scrollTo({ offset: 0, animated: true });
+            handleSubmit(handleQuestionaryForm)()
+          }} />
           <NextButton onPress={() => {
             ref?.current?.scrollTo({ offset: 0, animated: true });
             handleSubmit(handleQuestionaryForm)()

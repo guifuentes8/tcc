@@ -95,7 +95,6 @@ api.registerInterceptTokenManager = ({ signOut, refreshTokenUpdated }) => {
               refreshTokenUpdated(data.token);
               processQueue({ error: null, token: data.token });
 
-              console.log("Token att");
               resolve(originalResquest);
             } catch (error: any) {
               processQueue({ error, token: null });

@@ -200,7 +200,6 @@ export function QuestionaryItemEdit() {
     setDayByMonthValue(0)
     setDayByWeekValue(0)
 
-    console.log(questionaryForm)
 
     setFormData(questionaryForm)
     if (step === 15) {
