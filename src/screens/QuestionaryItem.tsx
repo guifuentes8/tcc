@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from "react";
 import { Controller, useForm } from 'react-hook-form';
-import { ImageSourcePropType } from "react-native";
 
 import { MaterialIcons } from '@expo/vector-icons'
 
@@ -8,22 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import { Box, Center, HStack, Icon, VStack, ScrollView } from "native-base";
 
-import Refrigerator from '@assets/geladeira.png'
-import EletricStove from '@assets/fogao-eletrico.png'
-import EletricOven from '@assets/forno-eletrico.png'
-import Microwave from '@assets/microondas.png'
-import WashingMachine from '@assets/maquina-lavar-roupa.png'
-import ClothesDryer from '@assets/secadora-roupa.png'
-import Shower from '@assets/chuveiro.png'
-import HairDryer from '@assets/secador-cabelo.png'
-import EletricFaucet from '@assets/torneira-eletrica.png'
-import AirConditioner from '@assets/ar-condicionado.png'
-import Fan from '@assets/ventilador.png'
-import VacuumCleaner from '@assets/aspirador-po.png'
-import EletricIron from '@assets/ferro-eletrico.png'
-import Videogame from '@assets/videogame.png'
-import Tv from '@assets/tv.png'
-import Computer from '@assets/pc.png'
+import { QuestionsData, Questions } from "@utils/QuestionsData";
 
 import { QuestionaryHeader } from "@components/QuestionaryHeader";
 import { NextButton } from "@components/NextButton";
@@ -32,15 +16,6 @@ import { SliderRange } from "@components/SliderRange";
 import { AskQuestionText } from "@components/AskQuestionText";
 import { AppNavigatorStackRoutesProps, AppNavigatorTabRoutesProps } from "@routes/app.routes";
 import { Loading } from "@components/Loading";
-
-type QuestionProps = {
-  itemName: string;
-  titleQuestion: string;
-  src: ImageSourcePropType;
-  itemText?: string;
-  questionAsk: Array<string>;
-  maxRangePossession: number;
-}
 
 export function QuestionaryItem() {
 
@@ -54,126 +29,6 @@ export function QuestionaryItem() {
   const [formData, setFormData] = useState({})
   const ref = useRef<any>(null)
 
-  const questions = ['Quantos você possui em casa?', 'Quanto tempo o aparelho fica ligado?', 'Com qual frequência você o usa?']
-
-  const questionData = [
-    {
-      titleQuestion: 'Cozinha',
-      itemName: 'refrigerator',
-      src: Refrigerator,
-      itemText: 'Geladeira',
-      maxRangePossession: 5,
-
-    },
-    {
-      titleQuestion: 'Cozinha',
-      itemName: 'EletricStove',
-      src: EletricStove,
-      itemText: 'Fogão elétrico',
-      maxRangePossession: 5,
-
-    },
-    {
-      titleQuestion: 'Cozinha',
-      itemName: 'EletricOven',
-      src: EletricOven,
-      itemText: 'Forno elétrico',
-      maxRangePossession: 5,
-
-    },
-    {
-      titleQuestion: 'Cozinha',
-      itemName: 'Microwave',
-      src: Microwave,
-      itemText: 'Micro-ondas',
-      maxRangePossession: 10,
-    },
-    {
-      titleQuestion: 'Lavanderia',
-      itemName: 'WashingMachine',
-      src: WashingMachine,
-      itemText: 'Máquina de lavar roupa',
-      maxRangePossession: 5,
-    },
-    {
-      titleQuestion: 'Lavanderia',
-      itemName: 'ClothesDryer',
-      src: ClothesDryer,
-      itemText: 'Secadora de roupas',
-      maxRangePossession: 5,
-    },
-    {
-      titleQuestion: 'Banheiro',
-      itemName: 'Shower',
-      src: Shower,
-      itemText: 'Chuveiro elétrico',
-      maxRangePossession: 10,
-    },
-    {
-      titleQuestion: 'Banheiro',
-      itemName: 'HairDryer',
-      src: HairDryer,
-      itemText: 'Secador de cabelo',
-      maxRangePossession: 10,
-    },
-    {
-      titleQuestion: 'Banheiro',
-      itemName: 'EletricFaucet',
-      src: EletricFaucet,
-      itemText: 'Torneira elétrica',
-      maxRangePossession: 10,
-    },
-    {
-      titleQuestion: 'Eletrodomésticos',
-      itemName: 'AirConditioner',
-      src: AirConditioner,
-      itemText: 'Ar-condicionado',
-      maxRangePossession: 10,
-    },
-    {
-      titleQuestion: 'Eletrodomésticos',
-      itemName: 'Fan',
-      src: Fan,
-      itemText: 'Ventilador',
-      maxRangePossession: 20,
-    },
-    {
-      titleQuestion: 'Eletrodomésticos',
-      itemName: 'VacuumCleaner',
-      src: VacuumCleaner,
-      itemText: 'Aspirador de pó',
-      maxRangePossession: 10,
-    },
-    {
-      titleQuestion: 'Eletrodomésticos',
-      itemName: 'EletricIron',
-      src: EletricIron,
-      itemText: 'Ferro elétrico',
-
-      maxRangePossession: 10,
-    },
-    {
-      titleQuestion: 'Eletrônicos',
-      itemName: 'Videogame',
-      src: Videogame,
-      itemText: 'Videogame',
-      maxRangePossession: 10,
-    },
-    {
-      titleQuestion: 'Eletrônicos',
-      itemName: 'Tv',
-      src: Tv,
-      itemText: 'Televisão',
-      maxRangePossession: 10,
-    },
-    {
-      titleQuestion: 'Eletrônicos',
-      itemName: 'Computer',
-      src: Computer,
-      itemText: 'Computador',
-      maxRangePossession: 10,
-    },
-  ]
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
@@ -190,27 +45,25 @@ export function QuestionaryItem() {
 
   async function handleQuestionaryForm(data: any) {
 
-
     isButtonFrequencySelected ? data.dayByWeek = 0 : data.dayByMonth = 0
     data.posses === undefined ? data.posses = 0 : data.posses
     data.allDay === undefined && isButtonSelected ? data.allDay = true : data.allDay = false
-    const questionaryForm = { ...formData, [questionData[step].itemName.toLowerCase()]: data }
+    const questionaryForm = { ...formData, [QuestionsData[step].inputName.toLowerCase()]: data }
 
     setValueItemSize(0)
     setDayByMonthValue(0)
     setDayByWeekValue(0)
 
-
+    console.log(questionaryForm)
     setFormData(questionaryForm)
-    if (step === 15) {
-      return navigation.navigate('dashboardTab')
-    }
+
     setStep(prevState => prevState + 1)
   }
 
-
-
   useEffect(() => {
+    if (step === 15) {
+      return navigation.navigate('dashboardTab')
+    }
     setIsButtonSelected(true);
     setIsButtonFrequencySelected(true);
   }, [step])
@@ -229,19 +82,19 @@ export function QuestionaryItem() {
     >
 
       <VStack px={8} flex={1}>
-        {questionData.length > 0 &&
+        {QuestionsData.length > 0 &&
           <>
             <Center mb={6}>
               <QuestionaryHeader
-                titleQuestion={questionData[step]?.titleQuestion}
-                srcImage={questionData[step]?.src}
-                key={questionData[step]?.itemText}
-                itemText={questionData[step]?.itemText}
+                titleQuestion={QuestionsData[step]?.categoryName}
+                srcImage={QuestionsData[step]?.src}
+                key={QuestionsData[step]?.itemName}
+                itemText={QuestionsData[step]?.itemName}
               />
             </Center>
             <VStack mb={6}>
               <Box mb={18}>
-                <AskQuestionText question={questions[0]} />
+                <AskQuestionText question={Questions[0]} />
               </Box>
               <Controller
                 defaultValue={0}
@@ -258,13 +111,13 @@ export function QuestionaryItem() {
                     value={valueItemSize}
                     myValue={valueItemSize}
                     min={0}
-                    max={questionData[step]?.maxRangePossession}
+                    max={QuestionsData[step]?.maxRangeInput}
                   />
                 )}
               />
             </VStack>
 
-            <AskQuestionText question={questions[1]} />
+            <AskQuestionText question={Questions[1]} />
             <HStack justifyContent="space-between" my={6}>
               <Controller
                 key="allDay"
@@ -349,7 +202,7 @@ export function QuestionaryItem() {
                 </VStack>
 
 
-                <AskQuestionText question={questions[2]} />
+                <AskQuestionText question={Questions[2]} />
 
                 <HStack justifyContent="space-between" my={6}>
 
@@ -427,7 +280,8 @@ export function QuestionaryItem() {
           {/* {step > 0 && <NextButton onPress={() => setStep(prevState => prevState - 1)} action="Anterior" icon="arrow-back" />} */}
           <Button title="Pular" maxW={32} onPress={() => {
             ref?.current?.scrollTo({ offset: 0, animated: true });
-            handleSubmit(handleQuestionaryForm)()
+            setStep(prevState => prevState + 1)
+
           }} />
           <NextButton onPress={() => {
             ref?.current?.scrollTo({ offset: 0, animated: true });

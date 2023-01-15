@@ -4,11 +4,27 @@ import Refrigerator from '@assets/geladeira.png'
 import { useToast } from 'native-base';
 import { HeaderActionsUser } from "@components/HeaderActionsUser";
 import { TouchableOpacity } from "react-native";
+import { MaskedText } from "react-native-mask-text";
 
 export function Dashboard() {
 
   const toast = useToast();
-  const economized = false;
+
+  // Variáveis para serem preenchidas com endpoints
+  const quantKwhMesTotal = {
+    quant: 230,
+    media5EstadosResidencial: 320
+  }
+  const itemMaisConsome = {
+    itemPhoto: Refrigerator,
+    itemName: 'Geladeira',
+    percentageDoTotal: 30,
+  }
+  const gastoEsperado = {
+    economized: false,
+    valorEsperado: 180, // conta kwh/mes total * preco medio 0,3 + 0.2 * 0,2 de imposto
+    valorUltimaConta: 400,
+  }
 
   return (
     <ScrollView
@@ -33,8 +49,8 @@ export function Dashboard() {
             >
               <CircularProgressBar
                 radius={125}
-                maxValue={100}
-                circularProgressValue={30}
+                maxValue={quantKwhMesTotal.media5EstadosResidencial}
+                circularProgressValue={quantKwhMesTotal.quant}
                 strokeSize={9} />
 
             </TouchableOpacity>
@@ -56,13 +72,13 @@ export function Dashboard() {
                 <CircularProgressBar
                   radius={70}
                   maxValue={100}
-                  value={30}
-                  sourceImg={Refrigerator}
+                  value={itemMaisConsome.percentageDoTotal}
+                  sourceImg={itemMaisConsome.itemPhoto}
                   strokeSize={5}
                 >
-                  <Text fontSize="12px">Geladeira</Text>
+                  <Text fontSize="12px">{itemMaisConsome.itemName}</Text>
                   {'\n'}
-                  30%
+                  {itemMaisConsome.percentageDoTotal}%
                 </CircularProgressBar>
               </TouchableOpacity>
 
@@ -76,18 +92,28 @@ export function Dashboard() {
                   maxWidth: 300,
                   minWidth: 300,
                   title: 'Gasto esperado',
-                  description: `Este valor é comparado ao valor da sua última conta de luz (400 reais). ${'\n'}${economized ? 'Parabéns, você está economizando!' : 'Ops, seria melhor você economizar um pouco!'}`,
+                  description: `Este valor é comparado ao valor da sua última conta de luz (R$ ${gastoEsperado.valorUltimaConta}). ${'\n'}${gastoEsperado.economized ? 'Parabéns, você está economizando!' : 'Ops, seria melhor você economizar um pouco!'}`,
                   placement: 'top',
                   bgColor: "blue.600"
                 })}
               >
                 <CircularProgressBar
                   radius={70}
-                  maxValue={400}
-                  value={180}
+                  maxValue={gastoEsperado.valorUltimaConta}
+                  value={gastoEsperado.valorEsperado}
                   strokeSize={5}
                 >
-                  R$ 180,00
+                  <MaskedText
+                    type="currency"
+                    options={{
+                      prefix: 'R$ ',
+                      decimalSeparator: ',',
+                      groupSeparator: '.',
+                      precision: 2
+                    }}
+                  >
+                    {String(gastoEsperado.valorEsperado * 100)}
+                  </MaskedText>
                 </CircularProgressBar>
               </TouchableOpacity>
             </Center>

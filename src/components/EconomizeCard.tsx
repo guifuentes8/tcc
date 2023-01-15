@@ -1,12 +1,14 @@
-import { HStack, Image, Text, VStack } from "native-base";
-import { TouchableOpacity, TouchableOpacityProps } from "react-native";
+import { HStack, IImageProps, Image, Text, VStack } from "native-base";
+import { ImageURISource, TouchableOpacity, TouchableOpacityProps } from "react-native";
 import { CircularProgressBar } from "./CircularProgress";
 
 type Props = TouchableOpacityProps & {
-
+  image: ImageURISource,
+  itemPercentage: number;
+  itemName: string;
 }
 
-export function EconomizeCard({ ...rest }: Props) {
+export function EconomizeCard({ image, itemPercentage, itemName, ...rest }: Props) {
   return (
     <TouchableOpacity {...rest}>
       <HStack justifyContent="space-between" bg="green.800" w="full" h={20} px={4} py={2} my={2} rounded="md">
@@ -15,15 +17,15 @@ export function EconomizeCard({ ...rest }: Props) {
             w={12}
             h={12}
             alt="Foto item"
-            source={{ uri: 'https://github.com/guifuentes8.png' }}
+            source={image}
           />
           <VStack ml={3}>
             <Text fontFamily="regular" fontSize="sm" color="green.100">Item:</Text>
-            <Text fontFamily="semibold" fontSize="md" color="green.100">Geladeira</Text>
+            <Text fontFamily="semibold" fontSize="md" color="green.100">{itemName}</Text>
           </VStack>
         </HStack>
 
-        <CircularProgressBar maxValue={100} radius={30} title="" valueSuffix="%" circularProgressValue={30} bgChange strokeSize={4} />
+        <CircularProgressBar maxValue={100} radius={30} title="" valueSuffix="%" circularProgressValue={itemPercentage} bgChange strokeSize={4} />
       </HStack>
     </TouchableOpacity>
   )
