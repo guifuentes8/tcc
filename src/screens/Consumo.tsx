@@ -11,33 +11,35 @@ export function Consumo() {
   const { colors } = useTheme()
   const navigation = useNavigation<AppNavigatorTabRoutesProps>()
 
+  const dataSelect = [
+    {
+      id: "1",
+      name: 'Cozinha',
+    },
+    {
+      id: "2",
+      name: 'Banheiro',
+    },
+    {
+      id: "3",
+      name: 'Lavanderia',
+    },
+  ]
   const data = [
     {
-      title: "1º lugar",
-      data: [{ id: 1, percentage: 70 }]
+      id: "1",
+      name: 'Cozinha',
     },
     {
-      title: "2º lugar",
-      data: [{ id: 2, percentage: 30 }]
+      id: "2",
+      name: 'Banheiro',
     },
     {
-      title: "2º lugar",
-      data: [{ id: 2, percentage: 30 }]
+      id: "3",
+      name: 'Lavanderia',
     },
-    {
-      title: "2º lugar",
-      data: [{ id: 2, percentage: 30 }]
-    },
-    {
-      title: "2º lugar",
-      data: [{ id: 2, percentage: 30 }]
-    },
-    {
-      title: "2º lugar",
-      data: [{ id: 2, percentage: 30 }]
-    },
-
   ]
+
 
   function handleNavigateToDetails() {
     navigation.navigate('consumoDetail')
@@ -46,7 +48,7 @@ export function Consumo() {
   return (
     <VStack mt={16} flex={1} px={8}>
       <HeaderActionsUser title="Meu consumo" subtitle="Veja onde está consumindo mais para poder reduzir!" />
-      <SelectInput />
+      <SelectInput data={dataSelect} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <ProgressBar textInsideProgressBar="30%" percentage={30} title="Consumo total na sua residência:" />
         <ProgressBar textInsideProgressBar="30%" percentage={30} title="Tempo total de uso na sua residência:" />
@@ -67,7 +69,7 @@ export function Consumo() {
           data={data}
           keyExtractor={(item, index): any => index}
           renderItem={({ item }) => (
-            <ItemCard onPress={handleNavigateToDetails} itemName="Geladeira" />
+            <ItemCard onPress={handleNavigateToDetails} src="Geladeira" />
           )}
         />
 

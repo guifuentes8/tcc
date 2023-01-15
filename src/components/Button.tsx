@@ -4,10 +4,10 @@ import { Loading } from './Loading';
 type Props = IButtonProps & {
   title: string;
   upperCase?: boolean;
-  selected?: boolean;
+  selected: boolean;
 }
 
-export function Button({ title, isLoading, selected = true, fontSize = 'xl', upperCase = false, ...rest }: Props) {
+export function Button({ title, isLoading, selected, fontSize = 'xl', upperCase = false, ...rest }: Props) {
   return (
     <>
 

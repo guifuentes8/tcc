@@ -1,5 +1,5 @@
 import Refrigerator from "@assets/geladeira.png";
-import EletricStove from "@assets/fogao-eletrico.png";
+import Cooktop from "@assets/cooktop.png";
 import EletricOven from "@assets/forno-eletrico.png";
 import Microwave from "@assets/microondas.png";
 import WashingMachine from "@assets/maquina-lavar-roupa.png";
@@ -31,7 +31,7 @@ export const QuestionsData = [
   },
   {
     categoryName: "Cozinha",
-    src: EletricStove,
+    src: Cooktop,
     itemName: "Cooktop",
     inputName: "eletric_stove",
     maxRangeInput: 5,

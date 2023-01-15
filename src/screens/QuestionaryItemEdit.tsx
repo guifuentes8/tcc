@@ -45,16 +45,6 @@ type QuestionProps = {
 export function QuestionaryItemEdit() {
 
   const [isLoading, setIsLoading] = useState(false);
-  const [step, setStep] = useState(0);
-  const [dayByWeekValue, setDayByWeekValue] = useState(0);
-  const [dayByMonthValue, setDayByMonthValue] = useState(0);
-  const [valueItemSize, setValueItemSize] = useState(0);
-  const [isButtonSelected, setIsButtonSelected] = useState(true);
-  const [isButtonFrequencySelected, setIsButtonFrequencySelected] = useState(true);
-  const [formData, setFormData] = useState({})
-  const ref = useRef<any>(null)
-
-  const questions = ['Quantos você possui em casa?', 'Quanto tempo o aparelho fica ligado?', 'Com qual frequência você o usa?']
 
   const questionData = [
     {
@@ -63,126 +53,36 @@ export function QuestionaryItemEdit() {
       src: Refrigerator,
       itemText: 'Geladeira',
       maxRangePossession: 5,
+      quantidade: 3,
+      hours: 4,
+      minutes: 25,
+      allDay: false,
+      dayByMonth: 4,
+      dayByWeek: 6,
+      buttonMonthSelected: false
+    },
 
-    },
-    {
-      titleQuestion: 'Cozinha',
-      itemName: 'EletricStove',
-      src: EletricStove,
-      itemText: 'Fogão elétrico',
-      maxRangePossession: 5,
-
-    },
-    {
-      titleQuestion: 'Cozinha',
-      itemName: 'EletricOven',
-      src: EletricOven,
-      itemText: 'Forno elétrico',
-      maxRangePossession: 5,
-
-    },
-    {
-      titleQuestion: 'Cozinha',
-      itemName: 'Microwave',
-      src: Microwave,
-      itemText: 'Micro-ondas',
-      maxRangePossession: 10,
-    },
-    {
-      titleQuestion: 'Lavanderia',
-      itemName: 'WashingMachine',
-      src: WashingMachine,
-      itemText: 'Máquina de lavar roupa',
-      maxRangePossession: 5,
-    },
-    {
-      titleQuestion: 'Lavanderia',
-      itemName: 'ClothesDryer',
-      src: ClothesDryer,
-      itemText: 'Secadora de roupas',
-      maxRangePossession: 5,
-    },
-    {
-      titleQuestion: 'Banheiro',
-      itemName: 'Shower',
-      src: Shower,
-      itemText: 'Chuveiro elétrico',
-      maxRangePossession: 10,
-    },
-    {
-      titleQuestion: 'Banheiro',
-      itemName: 'HairDryer',
-      src: HairDryer,
-      itemText: 'Secador de cabelo',
-      maxRangePossession: 10,
-    },
-    {
-      titleQuestion: 'Banheiro',
-      itemName: 'EletricFaucet',
-      src: EletricFaucet,
-      itemText: 'Torneira elétrica',
-      maxRangePossession: 10,
-    },
-    {
-      titleQuestion: 'Eletrodomésticos',
-      itemName: 'AirConditioner',
-      src: AirConditioner,
-      itemText: 'Ar-condicionado',
-      maxRangePossession: 10,
-    },
-    {
-      titleQuestion: 'Eletrodomésticos',
-      itemName: 'Fan',
-      src: Fan,
-      itemText: 'Ventilador',
-      maxRangePossession: 20,
-    },
-    {
-      titleQuestion: 'Eletrodomésticos',
-      itemName: 'VacuumCleaner',
-      src: VacuumCleaner,
-      itemText: 'Aspirador de pó',
-      maxRangePossession: 10,
-    },
-    {
-      titleQuestion: 'Eletrodomésticos',
-      itemName: 'EletricIron',
-      src: EletricIron,
-      itemText: 'Ferro elétrico',
-
-      maxRangePossession: 10,
-    },
-    {
-      titleQuestion: 'Eletrônicos',
-      itemName: 'Videogame',
-      src: Videogame,
-      itemText: 'Videogame',
-      maxRangePossession: 10,
-    },
-    {
-      titleQuestion: 'Eletrônicos',
-      itemName: 'Tv',
-      src: Tv,
-      itemText: 'Televisão',
-      maxRangePossession: 10,
-    },
-    {
-      titleQuestion: 'Eletrônicos',
-      itemName: 'Computer',
-      src: Computer,
-      itemText: 'Computador',
-      maxRangePossession: 10,
-    },
   ]
+  const [dayByWeekValue, setDayByWeekValue] = useState(questionData[0].dayByWeek);
+  const [dayByMonthValue, setDayByMonthValue] = useState(questionData[0].dayByMonth);
+  const [valueItemSize, setValueItemSize] = useState(questionData[0]?.quantidade);
+  const [isButtonSelected, setIsButtonSelected] = useState(questionData[0].allDay);
+  const [isButtonFrequencySelected, setIsButtonFrequencySelected] = useState(questionData[0].buttonMonthSelected);
+  const [formData, setFormData] = useState({})
+  const ref = useRef<any>(null)
+
+  const questions = ['Quantos você possui em casa?', 'Quanto tempo o aparelho fica ligado?', 'Com qual frequência você o usa?']
+
+
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      posses: 0,
+      posses: questionData[0].quantidade,
       allDay: true,
-      hour: 0,
-      minutes: 0,
-      dayByMonth: 0,
-      dayByWeek: 0,
+      hour: questionData[0].hours,
+      minutes: questionData[0].minutes,
+      dayByMonth: questionData[0].dayByMonth,
+      dayByWeek: questionData[0].dayByWeek,
     },
   });
 
@@ -198,31 +98,12 @@ export function QuestionaryItemEdit() {
     isButtonFrequencySelected ? data.dayByWeek = 0 : data.dayByMonth = 0
     data.posses === undefined ? data.posses = 0 : data.posses
     data.allDay === undefined && isButtonSelected ? data.allDay = true : data.allDay = false
-    const questionaryForm = { ...formData, [questionData[step].itemName.toLowerCase()]: data }
-
-    setValueItemSize(0)
-    setDayByMonthValue(0)
-    setDayByWeekValue(0)
+    const questionaryForm = { ...formData, [questionData[0].itemName.toLowerCase()]: data }
 
 
     setFormData(questionaryForm)
-    if (step === 15) {
-      return navigation.navigate('dashboardTab')
-    }
-    setStep(prevState => prevState + 1)
+    return navigation.navigate('dashboardTab')
   }
-
-
-
-  useEffect(() => {
-    setIsButtonSelected(true);
-    setIsButtonFrequencySelected(true);
-  }, [step])
-
-  useEffect(() => {
-    setDayByMonthValue(0)
-    setDayByWeekValue(0)
-  }, [isButtonFrequencySelected])
 
   return (
     <ScrollView
@@ -237,10 +118,10 @@ export function QuestionaryItemEdit() {
           <>
             <Center mb={6}>
               <QuestionaryHeader
-                titleQuestion={questionData[step]?.titleQuestion}
-                srcImage={questionData[step]?.src}
-                key={questionData[step]?.itemText}
-                itemText={questionData[step]?.itemText}
+                titleQuestion={questionData[0]?.titleQuestion}
+                srcImage={questionData[0]?.src}
+                key={questionData[0]?.itemText}
+                itemText={questionData[0]?.itemText}
               />
             </Center>
             <VStack mb={6}>
@@ -262,7 +143,7 @@ export function QuestionaryItemEdit() {
                     value={valueItemSize}
                     myValue={valueItemSize}
                     min={0}
-                    max={questionData[step]?.maxRangePossession}
+                    max={questionData[0]?.maxRangePossession}
                   />
                 )}
               />
@@ -387,7 +268,6 @@ export function QuestionaryItemEdit() {
                     key="dayByMonth"
                     control={control}
                     name='dayByMonth'
-                    defaultValue={0}
                     render={({ field: { onChange } }) => (
                       <SliderRange
                         onChange={(v) => {
@@ -408,7 +288,6 @@ export function QuestionaryItemEdit() {
                     key="dayByWeek"
                     control={control}
                     name='dayByWeek'
-                    defaultValue={0}
                     render={({ field: { onChange } }) => (
                       <SliderRange
                         onChange={(v) => {
@@ -428,13 +307,10 @@ export function QuestionaryItemEdit() {
           </>
         }
         <HStack flex={1} py={8} alignItems="flex-end" justifyContent='space-between'>
-          {/* {step > 0 && <NextButton onPress={() => setStep(prevState => prevState - 1)} action="Anterior" icon="arrow-back" />} */}
+          {/* {0 > 0 && <NextButton onPress={() => setStep(prevState => prevState - 1)} action="Anterior" icon="arrow-back" />} */}
 
           <NextButton onPress={handleGoBack} action="Voltar" icon="arrow-back" />
-          <Button title="Salvar" maxW={40} onPress={() => {
-            ref?.current?.scrollTo({ offset: 0, animated: true });
-            handleSubmit(handleQuestionaryForm)()
-          }} />
+          <Button selected title="Salvar" maxW={40} onPress={handleSubmit(handleQuestionaryForm)} />
 
 
         </HStack>

@@ -1,11 +1,11 @@
 import { Box, Image, Text } from "native-base";
-import { TouchableOpacity, TouchableOpacityProps } from "react-native";
+import { ImageURISource, TouchableOpacity, TouchableOpacityProps } from "react-native";
 
 type Props = TouchableOpacityProps & {
-  itemName: string;
+  image: ImageURISource;
 }
 
-export function ItemCard({ itemName, ...rest }: Props) {
+export function ItemCard({ image, ...rest }: Props) {
   return (
     <TouchableOpacity {...rest}>
       <Box
@@ -22,7 +22,7 @@ export function ItemCard({ itemName, ...rest }: Props) {
           w={20}
           h={20}
           alt="Foto item"
-          source={{ uri: 'https://github.com/guifuentes8.png' }}
+          source={image}
         />
       </Box>
     </TouchableOpacity>

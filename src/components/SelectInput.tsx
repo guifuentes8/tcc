@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { Select } from "native-base";
 
+type Props = {
+  data: Array<{ id: string, name: string }>;
+}
 
-export function SelectInput() {
-  const [service, setService] = useState("ux");
+export function SelectInput({ data }: Props) {
+  const [service, setService] = useState(data[0] ? data[0].id : '');
 
   return (
     <Select
@@ -16,9 +19,8 @@ export function SelectInput() {
       selectedValue={service}
       mb={6}
     >
-      <Select.Item label="UX Research" value="ux" />
-      <Select.Item label="Web Development" value="web" />
-      <Select.Item label="Cross Platform Development" value="cross" />
+      {data.map(item => <Select.Item label={item.name} value={item.id} />)}
+
     </Select>
   )
 }
