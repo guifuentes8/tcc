@@ -56,7 +56,7 @@ export function QuestionaryItemEdit() {
       quantidade: 3,
       hours: 4,
       minutes: 25,
-      allDay: false,
+      allDay: true,
       dayByMonth: 4,
       dayByWeek: 6,
       buttonMonthSelected: false
@@ -72,8 +72,6 @@ export function QuestionaryItemEdit() {
   const ref = useRef<any>(null)
 
   const questions = ['Quantos você possui em casa?', 'Quanto tempo o aparelho fica ligado?', 'Com qual frequência você o usa?']
-
-
 
   const { control, handleSubmit } = useForm({
     defaultValues: {

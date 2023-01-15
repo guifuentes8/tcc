@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { Select } from "native-base";
+import { ISelectProps, Select } from "native-base";
 
-type Props = {
+type Props = ISelectProps & {
   data: Array<{ id: string, name: string }>;
 }
 
-export function SelectInput({ data }: Props) {
-  const [service, setService] = useState(data[0] ? data[0].id : '');
+export function SelectInput({ data, ...rest }: Props) {
 
   return (
     <Select
@@ -16,10 +15,10 @@ export function SelectInput({ data }: Props) {
       borderWidth={3} rounded="lg"
       placeholderTextColor="gray.100"
       fontSize="xl"
-      selectedValue={service}
       mb={6}
+      {...rest}
     >
-      {data.map(item => <Select.Item label={item.name} value={item.id} />)}
+      {data.map(item => <Select.Item key={item.id} label={item.name} value={item.id} />)}
 
     </Select>
   )

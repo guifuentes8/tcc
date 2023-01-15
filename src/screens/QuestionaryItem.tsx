@@ -54,7 +54,6 @@ export function QuestionaryItem() {
     setDayByMonthValue(0)
     setDayByWeekValue(0)
 
-    console.log(questionaryForm)
     setFormData(questionaryForm)
 
     setStep(prevState => prevState + 1)
@@ -278,7 +277,7 @@ export function QuestionaryItem() {
         }
         <HStack flex={1} py={8} alignItems="flex-end" justifyContent='space-between'>
           {/* {step > 0 && <NextButton onPress={() => setStep(prevState => prevState - 1)} action="Anterior" icon="arrow-back" />} */}
-          <Button title="Pular" maxW={32} onPress={() => {
+          <Button selected title="Pular" maxW={32} onPress={() => {
             ref?.current?.scrollTo({ offset: 0, animated: true });
             setStep(prevState => prevState + 1)
 

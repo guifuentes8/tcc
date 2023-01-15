@@ -44,7 +44,7 @@ export function AppRoutes() {
 
   const { sizes, colors } = useTheme()
   const iconSize = 9;
-  const hasQuestionary = false
+  const hasQuestionary = true
 
   const Stack = createNativeStackNavigator<StackAppRoutes>();
   const Tab = createBottomTabNavigator<TabAppRoutes>();
