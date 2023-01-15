@@ -15,6 +15,7 @@ import { Consumo } from '@screens/Consumo'
 import { Ranking } from '@screens/Ranking'
 import { ConsumoDetail } from '@screens/ConsumoDetail'
 import { Profile } from '@screens/Profile'
+import { QuestionaryItemEdit } from '@screens/QuestionaryItemEdit'
 
 type StackAppRoutes = {
   welcome: undefined;
@@ -22,6 +23,8 @@ type StackAppRoutes = {
   questionaryItem: undefined;
   dashboardTab: undefined;
   profile: undefined;
+  questionaryItemEdit: undefined;
+
 
 }
 
@@ -31,7 +34,6 @@ type TabAppRoutes = {
   consumo: undefined;
   ranking: undefined;
   consumoDetail: undefined;
-  questionaryItemEdit: undefined;
 
 }
 
@@ -145,13 +147,7 @@ export function AppRoutes() {
             tabBarButton: () => null
           }}
         />
-        <Tab.Screen
-          name="questionaryItemEdit"
-          component={QuestionaryItem}
-          options={{
-            tabBarButton: () => null
-          }}
-        />
+
 
       </Tab.Navigator>
 
@@ -189,6 +185,11 @@ export function AppRoutes() {
         <Stack.Screen
           name="profile"
           component={Profile}
+        />
+
+        <Stack.Screen
+          name="questionaryItemEdit"
+          component={QuestionaryItemEdit}
         />
 
       </Stack.Navigator>

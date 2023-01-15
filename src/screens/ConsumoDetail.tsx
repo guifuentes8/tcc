@@ -37,10 +37,10 @@ export function ConsumoDetail() {
 
   ]
   return (
-    <ScrollView mt={16} flex={1} px={8} showsVerticalScrollIndicator={false}>
-      <VStack>
-        <HeaderActionsUser title="Banheiro" subtitle="Veja os detalhes dos itens deste cômodo!" />
-        <SelectInput />
+    <VStack mt={16} flex={1} px={8}>
+      <HeaderActionsUser title="Banheiro" subtitle="Veja os detalhes dos itens deste cômodo!" />
+      <SelectInput />
+      <ScrollView showsVerticalScrollIndicator={false}>
         <Center mt={4}>
           <Image
             w={32}
@@ -87,12 +87,12 @@ export function ConsumoDetail() {
             </CircularProgressBar>
           </VStack>
         </HStack>
-        <Text color="white" fontSize="sm" textAlign="center" fontFamily="medium">
+        <Text pb={4} color="white" fontSize="sm" textAlign="center" fontFamily="medium">
           As % acima são comparadas com o total da residência
         </Text>
 
-      </VStack>
+      </ScrollView >
+    </VStack>
 
-    </ScrollView >
   )
 }

@@ -37,7 +37,7 @@ export function HeaderActionsUser({ title, subtitle, profile = false }: Props) {
       <HStack justifyContent="space-between" alignItems="center">
         <TouchableOpacity onPress={profile ? handleNavigateToProfile : handleNavigateToDashboard}>
           {profile ?
-            <Image alt="Imagem do usuário" w={12} h={12} rounded="full"
+            <Image alt="Imagem do usuário" w={10} h={10} rounded="full"
               source={user.avatar ? { uri: `${api.defaults.baseURL}/avatar/${user.avatar}` } : userPhotoDefault} />
             :
             <House color={colors.green[100]} size={32} />}
@@ -45,7 +45,7 @@ export function HeaderActionsUser({ title, subtitle, profile = false }: Props) {
         </TouchableOpacity>
         <Center>
           <LogoSVG height={48} width={48} />
-          <Text mt={2} color="green.100" fontSize="md" fontFamily="audiowide">
+          <Text textTransform="capitalize" mt={2} color="green.100" fontSize="md" fontFamily="audiowide">
             {user.name}
           </Text>
         </Center>

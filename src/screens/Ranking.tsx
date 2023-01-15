@@ -42,9 +42,9 @@ export function Ranking() {
         showsVerticalScrollIndicator={false}
         w="100%"
         sections={data}
-        contentContainerStyle={{ justifyContent: 'center', paddingBottom: 64 }}
+        contentContainerStyle={{ justifyContent: 'center', paddingBottom: 32 }}
         keyExtractor={(item: any) => item.id}
-        renderSectionHeader={({ section }) => <Text fontSize="xl" fontFamily="medium" color="green.100">{section.title}</Text>}
+        renderSectionHeader={({ section }) => <Text fontSize="xl" fontFamily="audiowide" color="green.100">{section.title}</Text>}
         renderItem={({ item }) => (
           <ProgressBar textInsideProgressBar="30%" percentage={item.percentage} title="Morador: Guilherme Fuentes" />
         )}

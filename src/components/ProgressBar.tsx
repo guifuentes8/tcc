@@ -23,7 +23,7 @@ export function ProgressBar({ title, percentage, textInsideProgressBar }: Props)
         mb={6}
         mt={1}
         bg="green.800"
-        size="lg"
+        size="xl"
         _filledTrack={{ bg: colors.green[100], rounded: 12 }}
         value={percentage}
       >

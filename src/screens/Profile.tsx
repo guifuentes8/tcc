@@ -57,10 +57,13 @@ export function Profile() {
   const toast = useToast()
   const { user, updateUserProfile } = useAuth()
 
-  const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
+  const { control, handleSubmit, reset, formState: { errors } } = useForm<FormDataProps>({
     defaultValues: {
       name: user.name,
-      email: user.email
+      email: user.email,
+      password: '',
+      old_password: '',
+      confirm_password: '',
     },
     resolver: yupResolver(profileSchema)
   })
@@ -103,9 +106,6 @@ export function Profile() {
         const userPhotoUploadForm = new FormData()
         userPhotoUploadForm.append('avatar', photoFile)
 
-        console.log(userPhotoUploadForm)
-
-
         const avatarUpdatedResponse = await api.patch('/users/avatar', userPhotoUploadForm, {
           headers: {
             'Content-Type': 'multipart/form-data'
@@ -145,8 +145,9 @@ export function Profile() {
       toast.show({
         title: 'Perfil atualizado com sucesso!',
         placement: 'top',
-        bgColor: 'green.100'
       })
+
+      reset()
 
     } catch (error) {
       const isAppError = error instanceof AppError
