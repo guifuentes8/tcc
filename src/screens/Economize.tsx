@@ -1,175 +1,91 @@
 import { EconomizeCard } from "@components/EconomizeCard";
 import { HeaderActionsUser } from "@components/HeaderActionsUser";
+import { Loading } from "@components/Loading";
+import { useAuth } from "@hooks/useAuth";
 import { useNavigation } from "@react-navigation/native";
 import { AppNavigatorStackRoutesProps } from "@routes/app.routes";
+import { api } from "@services/api";
 import { SectionList, Text, VStack, Box } from "native-base";
+import { useEffect, useState } from "react";
 
 export function Economize() {
 
   const navigation = useNavigation<AppNavigatorStackRoutesProps>()
+  const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState<any[]>([]);
+  const { user } = useAuth()
 
-  const data: any = []
 
-  // const data = [
-  //   {
-  //     title: "Cozinha",
-  //     data: [
-  //       {
-  //         itemId: 1,
-  //         src: Refrigerator,
-  //         itemName: "Geladeira",
-  //         inputName: "refrigerator",
-  //         percentage: 30,
-  //       },
-  //       {
-  //         itemId: 1,
-  //         src: Cooktop,
-  //         itemName: "Cooktop",
-  //         inputName: "eletric_stove",
-  //         percentage: 30,
-  //       },
-  //       {
-  //         itemId: 1,
-  //         src: EletricOven,
-  //         itemName: "Forno elétrico",
-  //         inputName: "eletric_oven",
-  //         percentage: 30,
-  //       },
-  //       {
-  //         itemId: 1,
-  //         src: Microwave,
-  //         itemName: "Micro-ondas",
-  //         inputName: "microwave",
-  //         percentage: 30,
-  //       },
-  //     ],
-  //   },
 
-  //   {
-  //     title: "Lavanderia",
-  //     data: [
-  //       {
-  //         itemId: 1,
-  //         src: WashingMachine,
-  //         itemName: "Máquina de lavar roupa",
-  //         inputName: "washing_machine",
-  //         percentage: 30,
-  //       },
-  //       {
-  //         itemId: 1,
-  //         src: ClothesDryer,
-  //         itemName: "Secadora de roupas",
-  //         inputName: "clothes_dryer",
-  //         percentage: 30,
-  //       },
-  //     ]
+  async function getData() {
+    try {
+      setIsLoading(true)
 
-  //   },
-  //   {
-  //     title: "Banheiro",
-  //     data: [
-  //       {
-  //         itemId: 1,
-  //         src: Shower,
-  //         itemName: "Chuveiro elétrico",
-  //         inputName: "shower",
-  //         percentage: 30,
-  //       },
-  //       {
-  //         itemId: 1,
-  //         src: HairDryer,
-  //         itemName: "Secador de cabelo",
-  //         inputName: "hair_dryer",
-  //         percentage: 30,
-  //       },
-  //       {
-  //         itemId: 1,
-  //         src: EletricFaucet,
-  //         itemName: "Torneira elétrica",
-  //         inputName: "eletric_faucet",
-  //         percentage: 30,
-  //       },
-  //     ]
+      const { data } = await api.get('/category')
+      const response = await api.get(`/items/dashboard/${user.id}`)
 
-  //   },
-  //   {
-  //     title: "Eletrodomésticos",
-  //     data: [
-  //       {
-  //         itemId: 1,
-  //         src: AirConditioner,
-  //         itemName: "Ar-condicionado",
-  //         inputName: "air_conditioner",
-  //         percentage: 30,
-  //       },
-  //       {
-  //         itemId: 1,
-  //         src: Fan,
-  //         itemName: "Ventilador",
-  //         inputName: "fan",
-  //         percentage: 30,
-  //       },
-  //       {
-  //         itemId: 1,
-  //         src: VacuumCleaner,
-  //         itemName: "Aspirador de pó",
-  //         inputName: "vacuum_cleaner",
-  //         percentage: 30,
-  //       },
-  //       {
-  //         itemId: 1,
-  //         src: EletricIron,
-  //         itemName: "Ferro elétrico",
-  //         inputName: "eletric_iron",
-  //         percentage: 30,
-  //       },
-  //     ]
+      const percentageArr = response.data.itens.map((element: any) => {
+        return {
+          itemId: element.itemid,
+          percentageItem: element.percentage
+        }
+      })
 
-  //   },
-  //   {
-  //     title: "Eletrônicos",
-  //     data: [
-  //       {
-  //         src: Videogame,
-  //         itemName: "Videogame",
-  //         inputName: "videogame",
-  //         percentage: 30,
-  //       },
-  //       {
-  //         src: Tv,
-  //         itemName: "Televisão",
-  //         inputName: "tv",
-  //         percentage: 30,
-  //       },
-  //       {
-  //         src: Computer,
-  //         itemName: "Computador",
-  //         inputName: "computer",
-  //         percentage: 40,
-  //       },
-  //     ]
-  //   }
-  // ];
+
+      const itemDataArr = percentageArr.foreach((element: any) => {
+        const a = data.filter(categoryItem => {
+
+          const banana = categoryItem.data.filter((item) => {
+            if (item.id === element.itemId) {
+              item.percentage = element.percentageItem
+              return item
+            }
+            return
+
+          });
+          return { title: categoryItem.title, data: banana }
+        })
+        return a
+
+      })
+      setData(data)
+      console.log(itemDataArr)
+
+    } catch (error) {
+
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
 
   function handleGoToQuestionaryEdit() {
     navigation.navigate('questionaryItemEdit')
   }
 
+
+  useEffect(() => {
+    getData()
+  }, [])
+
   return (
-    <VStack mt={16} flex={1} px={8}>
-      <HeaderActionsUser title="Economize energia!" subtitle="Clique nos itens abaixo para alterar o seu consumo!" />
-      <SectionList
-        showsVerticalScrollIndicator={false}
-        w="100%"
-        sections={data}
-        contentContainerStyle={{ justifyContent: 'center', paddingBottom: 64 }}
-        keyExtractor={(item, index) => item.itemName}
-        renderSectionHeader={({ section: { title } }) => <Text fontSize="xl" fontFamily="audiowide" color="green.100">{title}</Text>}
-        renderItem={({ item }) => (
-          <EconomizeCard image={item.src} itemPercentage={item.percentage} itemName={item.itemName} onPress={handleGoToQuestionaryEdit} />
-        )}
-      />
-    </VStack >
+    <>
+      {isLoading && <Loading />}
+      {!isLoading && <VStack mt={16} flex={1} px={8}>
+        <HeaderActionsUser title="Economize energia!" subtitle="Clique nos itens abaixo para alterar o seu consumo!" />
+        <SectionList
+          showsVerticalScrollIndicator={false}
+          w="100%"
+          sections={data}
+          contentContainerStyle={{ justifyContent: 'center', paddingBottom: 64 }}
+          keyExtractor={(item: any, index) => item.id}
+          renderSectionHeader={({ section: { title } }) => <Text fontSize="xl" fontFamily="audiowide" color="green.100">{title}</Text>}
+          renderItem={({ item }: any) => (
+            <EconomizeCard image={item.photo} itemPercentage={30} itemName={item.name} onPress={handleGoToQuestionaryEdit} />
+          )}
+        />
+      </VStack >
+      }
+    </>
   )
 }

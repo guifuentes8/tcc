@@ -1,9 +1,10 @@
+import { api } from "@services/api";
 import { HStack, IImageProps, Image, Text, VStack } from "native-base";
 import { ImageURISource, TouchableOpacity, TouchableOpacityProps } from "react-native";
 import { CircularProgressBar } from "./CircularProgress";
 
 type Props = TouchableOpacityProps & {
-  image: ImageURISource,
+  image: string,
   itemPercentage: number;
   itemName: string;
 }
@@ -17,7 +18,7 @@ export function EconomizeCard({ image, itemPercentage, itemName, ...rest }: Prop
             w={12}
             h={12}
             alt="Foto item"
-            source={image}
+            source={{ uri: `${api.defaults.baseURL}/items/thumb/${image}` }}
           />
           <VStack ml={3}>
             <Text fontFamily="regular" fontSize="sm" color="green.100">Item:</Text>

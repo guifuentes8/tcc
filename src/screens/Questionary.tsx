@@ -151,7 +151,7 @@ export function Questionary() {
                 value={inputValueComforts}
                 myValue={inputValueComforts}
                 min={1}
-                max={10}
+                max={20}
               />
             )}
           />

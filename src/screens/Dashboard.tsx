@@ -49,6 +49,7 @@ export function Dashboard() {
     getDashboard()
   }, [])
 
+
   return (
     <>
       {isLoading && <Loading />}
@@ -102,7 +103,7 @@ export function Dashboard() {
                       sourceImg={{ uri: `${api.defaults.baseURL}/items/thumb/${dataDashboard.itemPhoto}` }}
                       strokeSize={5}
                     >
-                      <Text fontSize="12px">{dataDashboard.itemName}</Text>
+                      <Text numberOfLines={1} fontSize="10px">{dataDashboard.itemName}</Text>
                       {'\n'}
                       {dataDashboard.itemPercentageOfTotal}%
                     </CircularProgressBar>

@@ -32,6 +32,7 @@ export function QuestionaryItem() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [questionData, setQuestionData] = useState<questionDataProps[]>([]);
+  const [pulo, setPulo] = useState(false);
   const [step, setStep] = useState(0);
   const [dayByWeekValue, setDayByWeekValue] = useState(0);
   const [dayByMonthValue, setDayByMonthValue] = useState(0);
@@ -84,30 +85,34 @@ export function QuestionaryItem() {
     isButtonFrequencySelected ? data.dayByWeek = 0 : data.dayByMonth = 0
     isButtonSelected ? data.all_day = true : data.all_day = false
 
-    console.log(data)
 
     setValueItemSize(0)
     setDayByMonthValue(0)
     setDayByWeekValue(0)
 
-    if (step < 15)
+
+    if (step < 15 && !pulo)
       setMyData(prevArray => [...prevArray, data])
 
     try {
       if (step === 15) {
+
         setIsLoading(true)
-
-
         const dataSend = { userId: user.id, questions: [...myData, data] }
 
-        console.log(dataSend)
-        const response = await api.post('/questions', dataSend.questions[0].item_id === 16 ? { userId: user.id, questions: [] } : dataSend)
+        if (pulo) {
+          dataSend.questions = [...myData]
+        }
+
+        const response = await api.post('/questions', dataSend)
       }
     } catch (error) {
 
     } finally {
       setIsLoading(false)
       setStep(prevState => prevState + 1)
+      setPulo(false)
+
     }
   }
 
@@ -115,6 +120,8 @@ export function QuestionaryItem() {
     if (step > 15) {
       return navigation.navigate('dashboardTab')
     }
+
+    setValueItemSize(step < 1 ? 1 : 0)
     setIsButtonSelected(true);
     setIsButtonFrequencySelected(true);
     resetField('quant_item')
@@ -339,16 +346,14 @@ export function QuestionaryItem() {
             }
             <HStack flex={1} py={8} alignItems="flex-end" justifyContent={step >= 1 ? 'space-between' : 'flex-end'}>
 
-
               {step >= 1 && <Button selected title="Pular" maxW={32} onPress={() => {
+                setPulo(true)
+                if (step === 15) return handleSubmit(handleQuestionaryForm)()
                 ref?.current?.scrollTo({ offset: 0, animated: true });
-                if (step === 15) {
-                  handleSubmit(handleQuestionaryForm)()
-                }
-                setStep(prevState => prevState + 1)
+                setStep(prev => prev + 1)
 
-
-              }} />
+              }}
+              />
               }
               <NextButton onPress={() => {
                 ref?.current?.scrollTo({ offset: 0, animated: true });

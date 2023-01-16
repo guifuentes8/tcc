@@ -155,7 +155,7 @@ export function AppRoutes() {
   function QuestionaryRoute() {
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {user.reply_questionary === 0 &&
+        {user.reply_questionary === 1 &&
           <>
             <Stack.Screen
               name="welcome"
