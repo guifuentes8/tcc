@@ -7,9 +7,10 @@ type Props = TouchableOpacityProps & {
   image: string,
   itemPercentage: number;
   itemName: string;
+  card?: boolean;
 }
 
-export function EconomizeCard({ image, itemPercentage, itemName, ...rest }: Props) {
+export function EconomizeCard({ card, image, itemPercentage, itemName, ...rest }: Props) {
   return (
     <TouchableOpacity {...rest}>
       <HStack justifyContent="space-between" bg="green.800" w="full" h={20} px={4} py={2} my={2} rounded="md">
@@ -27,6 +28,8 @@ export function EconomizeCard({ image, itemPercentage, itemName, ...rest }: Prop
         </HStack>
 
         <CircularProgressBar maxValue={100} radius={30} title="" valueSuffix="%" circularProgressValue={itemPercentage} bgChange strokeSize={4} />
+
+
       </HStack>
     </TouchableOpacity>
   )

@@ -97,6 +97,7 @@ export function Dashboard() {
                     })}
                   >
                     <CircularProgressBar
+                      isCircularProgress={false}
                       radius={70}
                       maxValue={100}
                       value={dataDashboard.itemPercentageOfTotal}
@@ -125,6 +126,7 @@ export function Dashboard() {
                     })}
                   >
                     <CircularProgressBar
+                      isCircularProgress={false}
                       radius={70}
                       maxValue={dataDashboard.valorUltimaConta}
                       value={dataDashboard.valorEsperado}

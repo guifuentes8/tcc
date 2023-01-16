@@ -8,6 +8,7 @@ type Props = {
   radius: number;
   strokeSize: number;
   circularProgressValue?: number;
+  isCircularProgress?: boolean;
   sourceImg?: ImageSourcePropType;
   title?: string;
   maxValue?: number;
@@ -16,10 +17,12 @@ type Props = {
   valuePrefix?: string;
   valueSuffix?: string;
   bgChange?: boolean;
+  card?: boolean;
 }
 
 export function CircularProgressBar({
   children,
+  card = false,
   bgChange = false,
   value = 100,
   valuePrefix = '',
@@ -30,6 +33,7 @@ export function CircularProgressBar({
   maxValue,
   sourceImg = undefined,
   circularProgressValue = 0,
+  isCircularProgress = true,
   ...rest
 }: Props) {
 
@@ -43,14 +47,13 @@ export function CircularProgressBar({
       maxValue={maxValue}
       radius={radius}
       duration={2000}
-      activeStrokeWidth={circularProgressValue !== 0 ? 0 : strokeSize}
+      activeStrokeWidth={isCircularProgress ? 0 : strokeSize}
       activeStrokeColor={colors.green[100]}
-      inActiveStrokeWidth={circularProgressValue !== 0 ? 0 : strokeSize}
+      inActiveStrokeWidth={isCircularProgress ? 0 : strokeSize}
       inActiveStrokeColor={colors.green[800]}
       {...rest}
     >
-
-      {circularProgressValue !== 0 &&
+      {isCircularProgress &&
         <CircularProgress
           radius={radius}
           maxValue={maxValue}
@@ -68,7 +71,7 @@ export function CircularProgressBar({
           titleStyle={{ fontFamily: 'Audiowide_400Regular' }}
         />
       }
-      {circularProgressValue === 0 &&
+      {!isCircularProgress &&
         <VStack alignItems="center">
           {sourceImg && <Image
             w={size}

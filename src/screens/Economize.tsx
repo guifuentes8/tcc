@@ -26,30 +26,27 @@ export function Economize() {
 
       const percentageArr = response.data.itens.map((element: any) => {
         return {
-          itemId: element.itemid,
+          itemId: element.itemId,
           percentageItem: element.percentage
         }
       })
 
+      const primaryArray = data.map((sectionList: any) => {
 
-      const itemDataArr = percentageArr.foreach((element: any) => {
-        const a = data.filter(categoryItem => {
-
-          const banana = categoryItem.data.filter((item) => {
-            if (item.id === element.itemId) {
-              item.percentage = element.percentageItem
-              return item
+        const secondaryArray = sectionList.data.filter((itemData: any) => {
+          percentageArr.forEach((element: any) => {
+            if (element.itemId === itemData.id) {
+              itemData.percentage = element.percentageItem;
             }
-            return
-
           });
-          return { title: categoryItem.title, data: banana }
+          return itemData
         })
-        return a
 
+
+        return { title: sectionList.title, data: secondaryArray }
       })
-      setData(data)
-      console.log(itemDataArr)
+
+      setData(primaryArray)
 
     } catch (error) {
 
@@ -81,7 +78,7 @@ export function Economize() {
           keyExtractor={(item: any, index) => item.id}
           renderSectionHeader={({ section: { title } }) => <Text fontSize="xl" fontFamily="audiowide" color="green.100">{title}</Text>}
           renderItem={({ item }: any) => (
-            <EconomizeCard image={item.photo} itemPercentage={30} itemName={item.name} onPress={handleGoToQuestionaryEdit} />
+            <EconomizeCard card image={item.photo} itemPercentage={item.percentage || 0} itemName={item.name} onPress={handleGoToQuestionaryEdit} />
           )}
         />
       </VStack >
