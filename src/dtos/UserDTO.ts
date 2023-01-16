@@ -3,4 +3,5 @@ export type UserDTO = {
   name: string;
   email: string;
   avatar: string;
+  reply_questionary: number;
 };

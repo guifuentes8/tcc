@@ -3,7 +3,7 @@ import { Platform } from 'react-native'
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { createBottomTabNavigator, BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 
-import { CaretCircleDoubleUp, CurrencyCircleDollar, Lightbulb } from 'phosphor-react-native'
+import { CaretCircleDoubleUp, CurrencyCircleDollar, Lightbulb, Users } from 'phosphor-react-native'
 
 import { Questionary } from '@screens/Questionary'
 import { Welcome } from '@screens/Welcome'
@@ -16,6 +16,7 @@ import { Ranking } from '@screens/Ranking'
 import { ConsumoDetail } from '@screens/ConsumoDetail'
 import { Profile } from '@screens/Profile'
 import { QuestionaryItemEdit } from '@screens/QuestionaryItemEdit'
+import { useAuth } from '@hooks/useAuth'
 
 type StackAppRoutes = {
   welcome: undefined;
@@ -43,8 +44,9 @@ export type AppNavigatorTabRoutesProps = BottomTabNavigationProp<TabAppRoutes>;
 export function AppRoutes() {
 
   const { sizes, colors } = useTheme()
+  const { user } = useAuth()
+  console.log(user)
   const iconSize = 9;
-  const hasQuestionary = true
 
   const Stack = createNativeStackNavigator<StackAppRoutes>();
   const Tab = createBottomTabNavigator<TabAppRoutes>();
@@ -158,7 +160,7 @@ export function AppRoutes() {
   function QuestionaryRoute() {
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {hasQuestionary &&
+        {user.reply_questionary === 0 &&
           <>
             <Stack.Screen
               name="welcome"

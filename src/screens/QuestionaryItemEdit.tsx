@@ -56,7 +56,7 @@ export function QuestionaryItemEdit() {
       quantidade: 3,
       hours: 4,
       minutes: 25,
-      allDay: true,
+      all_day: true,
       dayByMonth: 4,
       dayByWeek: 6,
       buttonMonthSelected: false
@@ -66,7 +66,7 @@ export function QuestionaryItemEdit() {
   const [dayByWeekValue, setDayByWeekValue] = useState(questionData[0].dayByWeek);
   const [dayByMonthValue, setDayByMonthValue] = useState(questionData[0].dayByMonth);
   const [valueItemSize, setValueItemSize] = useState(questionData[0]?.quantidade);
-  const [isButtonSelected, setIsButtonSelected] = useState(questionData[0].allDay);
+  const [isButtonSelected, setIsButtonSelected] = useState(questionData[0].all_day);
   const [isButtonFrequencySelected, setIsButtonFrequencySelected] = useState(questionData[0].buttonMonthSelected);
   const [formData, setFormData] = useState({})
   const ref = useRef<any>(null)
@@ -75,12 +75,12 @@ export function QuestionaryItemEdit() {
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      posses: questionData[0].quantidade,
-      allDay: true,
-      hour: questionData[0].hours,
-      minutes: questionData[0].minutes,
-      dayByMonth: questionData[0].dayByMonth,
-      dayByWeek: questionData[0].dayByWeek,
+      quant_item: 0,
+      all_day: true,
+      hour: 0,
+      minutes: 0,
+      dayByMonth: 0,
+      dayByWeek: 0,
     },
   });
 
@@ -94,10 +94,9 @@ export function QuestionaryItemEdit() {
   async function handleQuestionaryForm(data: any) {
 
     isButtonFrequencySelected ? data.dayByWeek = 0 : data.dayByMonth = 0
-    data.posses === undefined ? data.posses = 0 : data.posses
-    data.allDay === undefined && isButtonSelected ? data.allDay = true : data.allDay = false
+    data.quant_item === undefined ? data.quant_item = 0 : data.quant_item
+    data.all_day === undefined && isButtonSelected ? data.all_day = true : data.all_day = false
     const questionaryForm = { ...formData, [questionData[0].itemName.toLowerCase()]: data }
-
 
     setFormData(questionaryForm)
     return navigation.navigate('dashboardTab')
@@ -128,9 +127,9 @@ export function QuestionaryItemEdit() {
               </Box>
               <Controller
                 defaultValue={0}
-                key="posses"
+                key="quant_item"
                 control={control}
-                name="posses"
+                name="quant_item"
                 render={({ field: { onChange } }) => (
                   <SliderRange
 
@@ -150,9 +149,9 @@ export function QuestionaryItemEdit() {
             <AskQuestionText question={questions[1]} />
             <HStack justifyContent="space-between" my={6}>
               <Controller
-                key="allDay"
+                key="all_day"
                 control={control}
-                name="allDay"
+                name="all_day"
                 render={({ field: { onChange } }) => (
                   <Button
                     fontSize="20px"

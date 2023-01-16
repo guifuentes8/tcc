@@ -10,15 +10,17 @@ import { HeaderWelcome } from "@components/HeaderWelcome";
 import { Points } from "@components/Points";
 import { Button } from "@components/Button";
 import { AppNavigatorStackRoutesProps } from "@routes/app.routes";
+import { useAuth } from "@hooks/useAuth";
 
 export function Welcome() {
 
   const [step, setStep] = useState(1);
+  const { user } = useAuth();
   const navigation = useNavigation<AppNavigatorStackRoutesProps>()
 
   const StepOne = () => (
     <Center flex={1} px={8}>
-      <HeaderWelcome title="Olá Guilherme," />
+      <HeaderWelcome title={`Olá ${user.name}`} />
       <HeaderWelcome title="Seja bem vindo!" />
 
       <LogoSvg height={200} width={200} />
@@ -60,7 +62,7 @@ export function Welcome() {
         </Text>
       </VStack>
 
-      <Text textAlign="center" fontFamily="regular" fontSize="md" color="white">Ao usar o nosso aplicativo, você concorda com os termos de uso.</Text>
+      <Text textAlign="center" mt={4} fontFamily="regular" fontSize="sm" color="white">Ao usar o nosso aplicativo, você concorda com os nossos termos de uso.</Text>
       <Button mt={3} mb={4} title="Vamos lá" onPress={() => setStep(3)} />
       <HeaderWelcome title="2/2" />
     </Center>

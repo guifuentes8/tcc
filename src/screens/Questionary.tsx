@@ -17,13 +17,19 @@ import { Button } from "@components/Button";
 import { useNavigation } from "@react-navigation/native";
 import { AppNavigatorStackRoutesProps } from "@routes/app.routes";
 import { SliderRange } from "@components/SliderRange";
+import { api } from "@services/api";
+import { useAuth } from "@hooks/useAuth";
 
 
 export function Questionary() {
 
   const [step, setStep] = useState(0);
-  const [inputValue, setInputValue] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [inputValueResidents, setInputValueResidents] = useState(1);
+  const [inputValueComforts, setInputValueComforts] = useState(1);
   const [formData, setFormData] = useState<any>({})
+
+  const { user } = useAuth()
 
   const { control, handleSubmit } = useForm();
 
@@ -45,22 +51,29 @@ export function Questionary() {
     questionText: 'Quantos cômodos sua casa possui?',
   }]
 
-  function handleQuestionaryForm(data: any) {
-    setFormData(data)
 
-    if (step + 1 > 2)
-      return goToItemQuestionary()
 
-    setStep(prevState => prevState + 1)
+  async function handleQuestionaryForm(data: any) {
+    try {
+      if (step === 2) {
+        setIsLoading(true)
+        const response = await api.post('/questions/user', { userId: user.id, questions: data })
+        goToItemQuestionary()
+      }
+
+    } catch (error) {
+
+    } finally {
+      setIsLoading(false)
+      if (step < 2)
+        setStep(prevState => prevState + 1)
+
+    }
   }
 
   function goToItemQuestionary() {
     navigation.navigate('questionaryItem')
   }
-
-  useEffect(() => {
-    setInputValue(1)
-  }, [step])
 
 
   return (
@@ -80,13 +93,13 @@ export function Questionary() {
               <Controller
                 defaultValue={0}
                 control={control}
-                name="energyBill"
+                name="energy_bill"
                 render={({ field: { onChange } }) => (
                   <MaskedTextInput
                     onChangeText={(text, rawText) => {
                       onChange(String(Number(rawText) / 100))
-                    }
-                    }
+                    }}
+                    value={formData?.energy_bill?.length > 0 ? String(Number(formData.energy_bill * 100)) : '0'}
                     type="currency"
                     options={{
                       prefix: 'R$ ',
@@ -112,11 +125,11 @@ export function Questionary() {
             render={({ field: { onChange } }) => (
               <SliderRange
                 onChange={(v) => {
-                  setInputValue(v)
+                  setInputValueResidents(v)
                   onChange(v)
                 }}
-                value={formData.residents ? formData.residents : inputValue}
-                myValue={formData.residents ? formData.residents : inputValue}
+                value={inputValueResidents}
+                myValue={inputValueResidents}
                 min={1}
                 max={10}
               />
@@ -132,11 +145,11 @@ export function Questionary() {
             render={({ field: { onChange } }) => (
               <SliderRange
                 onChange={(v) => {
-                  setInputValue(v)
+                  setInputValueComforts(v)
                   onChange(v)
                 }}
-                value={formData.comforts ? formData.comforts : inputValue}
-                myValue={formData.comforts ? formData.comforts : inputValue}
+                value={inputValueComforts}
+                myValue={inputValueComforts}
                 min={1}
                 max={10}
               />
