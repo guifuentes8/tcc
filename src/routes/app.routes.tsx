@@ -45,7 +45,6 @@ export function AppRoutes() {
 
   const { sizes, colors } = useTheme()
   const { user } = useAuth()
-  console.log(user)
   const iconSize = 9;
 
   const Stack = createNativeStackNavigator<StackAppRoutes>();
@@ -149,11 +148,7 @@ export function AppRoutes() {
             tabBarButton: () => null
           }}
         />
-
-
       </Tab.Navigator>
-
-
     )
   }
 

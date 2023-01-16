@@ -35,7 +35,7 @@ export function QuestionaryItem() {
   const [step, setStep] = useState(0);
   const [dayByWeekValue, setDayByWeekValue] = useState(0);
   const [dayByMonthValue, setDayByMonthValue] = useState(0);
-  const [valueItemSize, setValueItemSize] = useState(0);
+  const [valueItemSize, setValueItemSize] = useState(step >= 1 ? 0 : 1);
   const [isButtonSelected, setIsButtonSelected] = useState(true);
   const [isButtonFrequencySelected, setIsButtonFrequencySelected] = useState(true);
   const ref = useRef<any>(null)
@@ -43,7 +43,7 @@ export function QuestionaryItem() {
 
   const navigation = useNavigation<AppNavigatorStackRoutesProps>();
 
-  const { user, updateUserProfile } = useAuth()
+  const { user } = useAuth()
 
   const questions = [
     "Quantos você possui em casa?",
@@ -80,8 +80,11 @@ export function QuestionaryItem() {
   async function handleQuestionaryForm(data: any) {
     data.user_id = user.id
     data.item_id = questionData[step]?.id
+    data.quant_item = data.quant_item === 0 && step < 1 ? 1 : data.quant_item
     isButtonFrequencySelected ? data.dayByWeek = 0 : data.dayByMonth = 0
     isButtonSelected ? data.all_day = true : data.all_day = false
+
+    console.log(data)
 
     setValueItemSize(0)
     setDayByMonthValue(0)
@@ -90,14 +93,15 @@ export function QuestionaryItem() {
     if (step < 15)
       setMyData(prevArray => [...prevArray, data])
 
-    console.log(myData)
     try {
       if (step === 15) {
         setIsLoading(true)
 
+
         const dataSend = { userId: user.id, questions: [...myData, data] }
 
-        const response = await api.post('/questions', dataSend)
+        console.log(dataSend)
+        const response = await api.post('/questions', dataSend.questions[0].item_id === 16 ? { userId: user.id, questions: [] } : dataSend)
       }
     } catch (error) {
 
@@ -107,14 +111,13 @@ export function QuestionaryItem() {
     }
   }
 
-
-
   useEffect(() => {
     if (step > 15) {
       return navigation.navigate('dashboardTab')
     }
     setIsButtonSelected(true);
     setIsButtonFrequencySelected(true);
+    resetField('quant_item')
     resetField('hours')
     resetField('minutes')
   }, [step])
@@ -127,6 +130,7 @@ export function QuestionaryItem() {
   useEffect(() => {
     getQuestionaryItems()
   }, [])
+
 
   return (
     <>
@@ -155,20 +159,19 @@ export function QuestionaryItem() {
                     <AskQuestionText question={questions[0]} />
                   </Box>
                   <Controller
-                    defaultValue={0}
+                    defaultValue={step >= 1 ? 0 : 1}
                     key="quant_item"
                     control={control}
                     name="quant_item"
                     render={({ field: { onChange } }) => (
                       <SliderRange
-
                         onChange={(v) => {
                           setValueItemSize(v)
                           onChange(v)
                         }}
                         value={valueItemSize}
                         myValue={valueItemSize}
-                        min={0}
+                        min={step >= 1 ? 0 : 1}
                         max={questionData[step]?.max_select_range}
                       />
                     )}
@@ -334,8 +337,10 @@ export function QuestionaryItem() {
                 }
               </>
             }
-            <HStack flex={1} py={8} alignItems="flex-end" justifyContent='space-between'>
-              <Button selected title="Pular" maxW={32} onPress={() => {
+            <HStack flex={1} py={8} alignItems="flex-end" justifyContent={step >= 1 ? 'space-between' : 'flex-end'}>
+
+
+              {step >= 1 && <Button selected title="Pular" maxW={32} onPress={() => {
                 ref?.current?.scrollTo({ offset: 0, animated: true });
                 if (step === 15) {
                   handleSubmit(handleQuestionaryForm)()
@@ -344,6 +349,7 @@ export function QuestionaryItem() {
 
 
               }} />
+              }
               <NextButton onPress={() => {
                 ref?.current?.scrollTo({ offset: 0, animated: true });
                 handleSubmit(handleQuestionaryForm)()
