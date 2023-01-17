@@ -5,10 +5,11 @@ import { useToast } from 'native-base';
 import { HeaderActionsUser } from "@components/HeaderActionsUser";
 import { TouchableOpacity } from "react-native";
 import { MaskedText } from "react-native-mask-text";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { api } from "@services/api";
 import { useAuth } from "@hooks/useAuth";
 import { Loading } from "@components/Loading";
+import { useFocusEffect } from "@react-navigation/native";
 
 type dataDashboardProps = {
   total: number;
@@ -26,7 +27,7 @@ export function Dashboard() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [dataDashboard, setDataDashboard] = useState({} as dataDashboardProps);
-  const { user } = useAuth()
+  const { user, refreshedToken } = useAuth()
 
   const toast = useToast();
 
@@ -45,10 +46,13 @@ export function Dashboard() {
     }
   }
 
-  useEffect(() => {
-    getDashboard()
-  }, [])
-
+  useFocusEffect(
+    useCallback(
+      () => {
+        getDashboard()
+      },
+      [refreshedToken],
+    ))
 
   return (
     <>

@@ -87,7 +87,8 @@ export function QuestionaryItemEdit({ route }: any) {
     try {
       setIsLoading(true)
 
-      const { data } = await api.get(`/questions/${itemId}`)
+      const { data } = await api.get(`/questions/${itemId}/${user.id}`)
+
 
       setQuestionData(data)
       setIsButtonSelected(data[0].all_day === 1)
@@ -111,7 +112,7 @@ export function QuestionaryItemEdit({ route }: any) {
     data.item_id = questionData[0].id
     data.user_id = user.id
     data.quant_item = valueItemSize
-    isButtonSelected ? data.all_day = true : data.all_day = false
+    data.all_day = isButtonSelected ? true : false
     data.hours = isButtonSelected ? 0 : hours
     data.minutes = isButtonSelected ? 0 : minutes
     data.dayByMonth = isButtonSelected ? 0 : dayByMonthValue

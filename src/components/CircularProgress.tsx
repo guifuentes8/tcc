@@ -45,7 +45,7 @@ export function CircularProgressBar({
       value={value}
       maxValue={maxValue}
       radius={radius}
-      duration={2000}
+      duration={5000}
       activeStrokeWidth={isCircularProgress ? 0 : strokeSize}
       activeStrokeColor={colors.green[100]}
       inActiveStrokeWidth={isCircularProgress ? 0 : strokeSize}
@@ -59,7 +59,7 @@ export function CircularProgressBar({
           value={circularProgressValue}
           valuePrefix={valuePrefix}
           valueSuffix={valueSuffix}
-          duration={2000}
+          duration={5000}
           activeStrokeWidth={strokeSize}
           activeStrokeColor={colors.green[100]}
           inActiveStrokeWidth={strokeSize}

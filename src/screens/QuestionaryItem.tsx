@@ -85,24 +85,27 @@ export function QuestionaryItem() {
     isButtonFrequencySelected ? data.dayByWeek = 0 : data.dayByMonth = 0
     isButtonSelected ? data.all_day = true : data.all_day = false
 
+    if (step < 15) {
+      if (pulo && step > 0) {
+        setMyData(prevArray => [...prevArray])
+
+      } else {
+
+        setMyData(prevArray => [...prevArray, data])
+      }
+    }
 
     setValueItemSize(0)
     setDayByMonthValue(0)
     setDayByWeekValue(0)
 
-
-    if (step < 15 && !pulo)
-      setMyData(prevArray => [...prevArray, data])
-
     try {
       if (step === 15) {
 
         setIsLoading(true)
-        const dataSend = { userId: user.id, questions: [...myData, data] }
+        const dataSend = { userId: user.id, questions: pulo ? [...myData] : [...myData, data] }
 
-        if (pulo) {
-          dataSend.questions = [...myData]
-        }
+        console.log(dataSend)
 
         const response = await api.post('/questions', dataSend)
       }
@@ -110,13 +113,20 @@ export function QuestionaryItem() {
 
     } finally {
       setIsLoading(false)
-      setStep(prevState => prevState + 1)
       setPulo(false)
-
+      stepMoreOne()
     }
   }
 
+
+  function stepMoreOne() {
+    return setStep(prevState => prevState + 1)
+  }
+
   useEffect(() => {
+
+    setPulo(true)
+
     if (step > 15) {
       return navigation.navigate('dashboardTab')
     }
@@ -348,9 +358,8 @@ export function QuestionaryItem() {
 
               {step >= 1 && <Button selected title="Pular" maxW={32} onPress={() => {
                 setPulo(true)
-                if (step === 15) return handleSubmit(handleQuestionaryForm)()
+                handleSubmit(handleQuestionaryForm)()
                 ref?.current?.scrollTo({ offset: 0, animated: true });
-                setStep(prev => prev + 1)
 
               }}
               />

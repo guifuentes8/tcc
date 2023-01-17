@@ -1,5 +1,8 @@
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { useTheme, Box } from "native-base";
+import { YellowBox } from "react-native";
+
+
 
 import { AuthRoutes } from "./auth.routes";
 import { AppRoutes } from "./app.routes";
@@ -18,6 +21,8 @@ export function Routes() {
   if (isLoadingUserStorageData) {
     return <Loading />
   }
+
+  YellowBox.ignoreWarnings([""]);
 
   return (
     <Box flex={1} bg="green.900">
