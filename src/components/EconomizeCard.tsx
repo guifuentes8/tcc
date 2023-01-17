@@ -13,7 +13,7 @@ type Props = TouchableOpacityProps & {
 export function EconomizeCard({ card, image, itemPercentage, itemName, ...rest }: Props) {
   return (
     <TouchableOpacity {...rest}>
-      <HStack justifyContent="space-between" bg="green.800" w="full" h={20} px={4} py={2} my={2} rounded="md">
+      <HStack justifyContent="space-between" alignItems="center" bg="green.800" w="full" h={20} px={4} py={2} my={2} rounded="md">
         <HStack alignItems="center">
           <Image
             w={12}
@@ -27,8 +27,15 @@ export function EconomizeCard({ card, image, itemPercentage, itemName, ...rest }
           </VStack>
         </HStack>
 
-        <CircularProgressBar maxValue={100} radius={30} title="" valueSuffix="%" circularProgressValue={itemPercentage} bgChange strokeSize={4} />
-
+        <CircularProgressBar
+          maxValue={100}
+          radius={30}
+          title=""
+          valueSuffix="%"
+          circularProgressValue={itemPercentage}
+          bgChange
+          strokeSize={4}
+        />
 
       </HStack>
     </TouchableOpacity>

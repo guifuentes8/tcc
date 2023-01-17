@@ -24,7 +24,7 @@ type StackAppRoutes = {
   questionaryItem: undefined;
   dashboardTab: undefined;
   profile: undefined;
-  questionaryItemEdit: undefined;
+  questionaryItemEdit: { itemId: number };
 
 
 }

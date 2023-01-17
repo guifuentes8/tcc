@@ -2,7 +2,6 @@ import { Image, Text, useTheme, View, VStack } from "native-base";
 import { ReactNode } from "react";
 import { ImageSourcePropType } from "react-native";
 import CircularProgress, { CircularProgressBase } from 'react-native-circular-progress-indicator';
-import { CircularProgressBaseProps } from "react-native-circular-progress-indicator/lib/typescript/types";
 
 type Props = {
   radius: number;

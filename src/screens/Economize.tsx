@@ -2,20 +2,18 @@ import { EconomizeCard } from "@components/EconomizeCard";
 import { HeaderActionsUser } from "@components/HeaderActionsUser";
 import { Loading } from "@components/Loading";
 import { useAuth } from "@hooks/useAuth";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { AppNavigatorStackRoutesProps } from "@routes/app.routes";
 import { api } from "@services/api";
 import { SectionList, Text, VStack, Box } from "native-base";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export function Economize() {
 
   const navigation = useNavigation<AppNavigatorStackRoutesProps>()
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<any[]>([]);
-  const { user } = useAuth()
-
-
+  const { user, refreshedToken } = useAuth()
 
   async function getData() {
     try {
@@ -56,14 +54,17 @@ export function Economize() {
   }
 
 
-  function handleGoToQuestionaryEdit() {
-    navigation.navigate('questionaryItemEdit')
+  function handleGoToQuestionaryEdit(itemId: number) {
+    navigation.navigate('questionaryItemEdit', { itemId })
   }
 
-
-  useEffect(() => {
-    getData()
-  }, [])
+  useFocusEffect(
+    useCallback(
+      () => {
+        getData()
+      },
+      [refreshedToken],
+    ))
 
   return (
     <>
@@ -78,7 +79,7 @@ export function Economize() {
           keyExtractor={(item: any, index) => item.id}
           renderSectionHeader={({ section: { title } }) => <Text fontSize="xl" fontFamily="audiowide" color="green.100">{title}</Text>}
           renderItem={({ item }: any) => (
-            <EconomizeCard card image={item.photo} itemPercentage={item.percentage || 0} itemName={item.name} onPress={handleGoToQuestionaryEdit} />
+            <EconomizeCard card image={item.photo} itemPercentage={item.percentage || 0} itemName={item.name} onPress={() => handleGoToQuestionaryEdit(item.id)} />
           )}
         />
       </VStack >
