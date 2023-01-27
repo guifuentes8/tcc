@@ -1,5 +1,6 @@
 import { HeaderActionsUser } from "@components/HeaderActionsUser";
 import { ItemCard } from "@components/ItemCard";
+import { Loading } from "@components/Loading";
 import { ProgressBar } from "@components/ProgressBar";
 import { SelectInput } from "@components/SelectInput";
 import { useAuth } from "@hooks/useAuth";
@@ -42,6 +43,8 @@ export function Consumo() {
 
   async function getItemByCategoryData() {
     try {
+      setIsLoading(true)
+
       const response = await api.get(`/items/dashboard/${user.id}`)
       setTotalValue({
         totalHours: response.data.totalHours,
@@ -52,27 +55,23 @@ export function Consumo() {
 
     } catch (error) {
 
-    }
-  }
+    } finally {
+      setIsLoading(false)
 
-  const categoryData =
-  {
-    consumoTotalPercentage: 50,
-    tempoTotalPercentage: 20,
-    itemMaisConsome: 'chuveiro elétrico',
-    itemMaisConsomePercentage: 40,
+    }
   }
 
   function handleChangeSelectValue(value: string) {
     setService(value)
   }
 
-  function handleNavigateToDetails() {
-    navigation.navigate('consumoDetail')
+  function handleNavigateToDetails(itemData: any) {
+    navigation.navigate('consumoDetail', { itemData })
   }
 
   useEffect(() => {
     getCategoryData()
+
   }, [])
 
   useFocusEffect(
@@ -85,56 +84,67 @@ export function Consumo() {
       [service],
     ))
 
+
   return (
     <VStack mt={16} flex={1} px={8}>
-      <HeaderActionsUser title="Meu consumo" subtitle="Veja onde está consumindo mais para poder reduzir!" />
-      <SelectInput
-        selectedValue={service}
-        onValueChange={(value) => {
-          handleChangeSelectValue(value)
-          getItemByCategoryData()
-        }
-        }
-        data={dataSelect}
-      />
-      <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false}>
-        <ProgressBar
-          textInsideProgressBar={`${Math.round(dataItem.totalItensKwhByCategory * 100 / totalValue.totalKwh)}%`}
-          percentage={dataItem.totalItensKwhByCategory * 100 / totalValue.totalKwh}
-          title="Consumo total na sua residência:"
-        />
-        <ProgressBar
-          textInsideProgressBar={`${Math.round(dataItem.totalItemHoursByCategory * 100 / totalValue.totalHours)}%`}
-          percentage={dataItem.totalItemHoursByCategory * 100 / totalValue.totalHours}
-          title="Tempo total de uso na sua residência:"
-        />
-        <ProgressBar
-          textInsideProgressBar={`${dataItem.itemMoreConsumedPercentage}%`}
-          percentage={dataItem.itemMoreConsumedPercentage}
-          title={`Item que mais consome: ${dataItem.itemMoreConsumedName || 'Nenhum'}`}
-        />
+      {isLoading ? <Loading /> :
+        <>
+          <HeaderActionsUser title="Meu consumo" subtitle="Veja onde está consumindo mais para poder reduzir!" />
+          <SelectInput
+            selectedValue={service}
+            onValueChange={(value) => {
+              handleChangeSelectValue(value)
+              getItemByCategoryData()
+            }
+            }
+            data={dataSelect}
+          />
+          <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false}>
+            <ProgressBar
+              textInsideProgressBar={`${Math.round(dataItem.totalItensKwhByCategory * 100 / totalValue.totalKwh)}%`}
+              percentage={dataItem.totalItensKwhByCategory * 100 / totalValue.totalKwh}
+              title="Consumo total na sua residência:"
+            />
+            <ProgressBar
+              textInsideProgressBar={`${Math.round(dataItem.totalItemHoursByCategory * 100 / totalValue.totalHours)}%`}
+              percentage={dataItem.totalItemHoursByCategory * 100 / totalValue.totalHours}
+              title="Tempo total de uso na sua residência:"
+            />
+            <ProgressBar
+              textInsideProgressBar={`${dataItem.itemMoreConsumedPercentage}%`}
+              percentage={dataItem.itemMoreConsumedPercentage}
+              title={`Item que mais consome: ${dataItem.itemMoreConsumedName || 'Nenhum'}`}
+            />
 
-        <Text
-          fontFamily="semibold"
-          fontSize="md"
-          color="green.100"
-        >
-          Itens em uso nesse ambiente:
-        </Text>
+            <Text
+              fontFamily="semibold"
+              fontSize="md"
+              color="green.100"
+            >
+              Itens em uso nesse ambiente:
+            </Text>
 
-        <FlatList
-          horizontal
-          ref={ref}
-          showsHorizontalScrollIndicator={false}
-          mb={8}
-          data={dataItem.allItensDataByCategory}
-          keyExtractor={(item, index): any => index}
-          renderItem={({ item }: any) => (
-            <ItemCard onPress={handleNavigateToDetails} image={item?.photo} />
-          )}
-        />
+            <FlatList
+              horizontal
+              ref={ref}
+              showsHorizontalScrollIndicator={false}
+              mb={8}
+              data={dataItem.allItensDataByCategory}
+              keyExtractor={(item, index): any => index}
+              renderItem={({ item }: any) => (
+                <ItemCard onPress={() => handleNavigateToDetails(
+                  {
+                    itemId: item.id,
+                    categoryId: item.category_id
+                  }
+                )} image={item?.photo} />
+              )}
+            />
 
-      </ScrollView>
+          </ScrollView>
+        </>
+      }
+
     </VStack>
 
   )

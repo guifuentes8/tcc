@@ -25,7 +25,7 @@ export function ProgressBar({ title, percentage, textInsideProgressBar }: Props)
         bg="green.800"
         size="xl"
         _filledTrack={{ bg: colors.green[100], rounded: 12 }}
-        value={percentage}
+        value={percentage !== 0 ? percentage : 100}
       >
         <Text
           fontFamily="semibold"
@@ -33,7 +33,7 @@ export function ProgressBar({ title, percentage, textInsideProgressBar }: Props)
           color="green.900"
           position="absolute"
         >
-          {textInsideProgressBar}
+          {percentage !== 0 ? textInsideProgressBar : 'Nenhum'}
         </Text>
 
       </Progress>

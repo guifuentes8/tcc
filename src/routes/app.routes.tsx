@@ -34,7 +34,7 @@ type TabAppRoutes = {
   economize: undefined;
   consumo: undefined;
   ranking: undefined;
-  consumoDetail: undefined;
+  consumoDetail: { itemData: any };
 
 }
 

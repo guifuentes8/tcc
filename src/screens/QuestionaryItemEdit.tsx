@@ -8,23 +8,6 @@ import { useNavigation } from "@react-navigation/native";
 
 import { Box, Center, HStack, Icon, VStack, ScrollView } from "native-base";
 
-import Refrigerator from '@assets/geladeira.png'
-import EletricStove from '@assets/fogao-eletrico.png'
-import EletricOven from '@assets/forno-eletrico.png'
-import Microwave from '@assets/microondas.png'
-import WashingMachine from '@assets/maquina-lavar-roupa.png'
-import ClothesDryer from '@assets/secadora-roupa.png'
-import Shower from '@assets/chuveiro.png'
-import HairDryer from '@assets/secador-cabelo.png'
-import EletricFaucet from '@assets/torneira-eletrica.png'
-import AirConditioner from '@assets/ar-condicionado.png'
-import Fan from '@assets/ventilador.png'
-import VacuumCleaner from '@assets/aspirador-po.png'
-import EletricIron from '@assets/ferro-eletrico.png'
-import Videogame from '@assets/videogame.png'
-import Tv from '@assets/tv.png'
-import Computer from '@assets/pc.png'
-
 import { QuestionaryHeader } from "@components/QuestionaryHeader";
 import { NextButton } from "@components/NextButton";
 import { Button } from "@components/Button";
