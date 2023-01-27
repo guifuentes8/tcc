@@ -2,148 +2,58 @@ import { HeaderActionsUser } from "@components/HeaderActionsUser";
 import { ItemCard } from "@components/ItemCard";
 import { ProgressBar } from "@components/ProgressBar";
 import { SelectInput } from "@components/SelectInput";
-import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "@hooks/useAuth";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { AppNavigatorTabRoutesProps } from "@routes/app.routes";
+import { api } from "@services/api";
 import { FlatList, ScrollView, SectionList, Text, useTheme, VStack } from "native-base";
 
 
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+
 
 export function Consumo() {
 
-  const { colors } = useTheme()
   const navigation = useNavigation<AppNavigatorTabRoutesProps>()
+  const [isLoading, setIsLoading] = useState(false);
+  const [dataSelect, setDataSelect] = useState([]);
+  const [dataItem, setDataItem] = useState<any>([]);
+  const [totalValue, setTotalValue] = useState<any>({});
+  const [service, setService] = useState<any>(1);
+  const { user } = useAuth()
 
-  const dataSelect = [
-    {
-      id: "1",
-      name: 'Cozinha',
-    },
-    {
-      id: "2",
-      name: 'Banheiro',
-    },
-    {
-      id: "3",
-      name: 'Lavanderia',
-    },
-  ]
+  const ref = useRef<any>(null)
+  const scrollRef = useRef<any>(null)
 
-  const data: any = []
-  // const data = [
-  //   {
-  //     categoryName: "Cozinha",
-  //     src: Refrigerator,
-  //     itemName: "Geladeira",
-  //     inputName: "refrigerator",
-  //     maxRangeInput: 5,
-  //   },
-  //   {
-  //     categoryName: "Cozinha",
-  //     src: Cooktop,
-  //     itemName: "Cooktop",
-  //     inputName: "eletric_stove",
-  //     maxRangeInput: 5,
-  //   },
-  //   {
-  //     categoryName: "Cozinha",
-  //     src: EletricOven,
-  //     itemName: "Forno elétrico",
-  //     inputName: "eletric_oven",
-  //     maxRangeInput: 5,
-  //   },
-  //   {
-  //     categoryName: "Cozinha",
-  //     src: Microwave,
-  //     itemName: "Micro-ondas",
-  //     inputName: "microwave",
-  //     maxRangeInput: 10,
-  //   },
-  //   {
-  //     categoryName: "Lavanderia",
-  //     src: WashingMachine,
-  //     itemName: "Máquina de lavar roupa",
-  //     inputName: "washing_machine",
-  //     maxRangeInput: 5,
-  //   },
-  //   {
-  //     categoryName: "Lavanderia",
-  //     src: ClothesDryer,
-  //     itemName: "Secadora de roupas",
-  //     inputName: "clothes_dryer",
-  //     maxRangeInput: 5,
-  //   },
-  //   {
-  //     categoryName: "Banheiro",
-  //     src: Shower,
-  //     itemName: "Chuveiro elétrico",
-  //     inputName: "shower",
-  //     maxRangeInput: 10,
-  //   },
-  //   {
-  //     categoryName: "Banheiro",
-  //     src: HairDryer,
-  //     itemName: "Secador de cabelo",
-  //     inputName: "hair_dryer",
-  //     maxRangeInput: 10,
-  //   },
-  //   {
-  //     categoryName: "Banheiro",
-  //     src: EletricFaucet,
-  //     itemName: "Torneira elétrica",
-  //     inputName: "eletric_faucet",
-  //     maxRangeInput: 10,
-  //   },
-  //   {
-  //     categoryName: "Eletrodomésticos",
-  //     src: AirConditioner,
-  //     itemName: "Ar-condicionado",
-  //     inputName: "air_conditioner",
-  //     maxRangeInput: 10,
-  //   },
-  //   {
-  //     categoryName: "Eletrodomésticos",
-  //     src: Fan,
-  //     itemName: "Ventilador",
-  //     inputName: "fan",
-  //     maxRangeInput: 20,
-  //   },
-  //   {
-  //     categoryName: "Eletrodomésticos",
-  //     src: VacuumCleaner,
-  //     itemName: "Aspirador de pó",
-  //     inputName: "vacuum_cleaner",
-  //     maxRangeInput: 10,
-  //   },
-  //   {
-  //     categoryName: "Eletrodomésticos",
-  //     src: EletricIron,
-  //     itemName: "Ferro elétrico",
-  //     inputName: "eletric_iron",
-  //     maxRangeInput: 10,
-  //   },
-  //   {
-  //     categoryName: "Eletrônicos",
-  //     src: Videogame,
-  //     itemName: "Videogame",
-  //     inputName: "videogame",
-  //     maxRangeInput: 10,
-  //   },
-  //   {
-  //     categoryName: "Eletrônicos",
-  //     src: Tv,
-  //     itemName: "Televisão",
-  //     inputName: "tv",
-  //     maxRangeInput: 10,
-  //   },
-  //   {
-  //     categoryName: "Eletrônicos",
-  //     src: Computer,
-  //     itemName: "Computador",
-  //     inputName: "computer",
-  //     maxRangeInput: 10,
-  //   },
-  // ];
+
+  async function getCategoryData() {
+    try {
+      setIsLoading(true)
+
+      const { data } = await api.get(`/category/all`)
+      setDataSelect(data)
+
+    } catch (error) {
+
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  async function getItemByCategoryData() {
+    try {
+      const response = await api.get(`/items/dashboard/${user.id}`)
+      setTotalValue({
+        totalHours: response.data.totalHours,
+        totalKwh: response.data.total
+      })
+      const { data } = await api.get(`/category/itemByCategory/${service}/${user.id}`)
+      setDataItem(data)
+
+    } catch (error) {
+
+    }
+  }
 
   const categoryData =
   {
@@ -153,10 +63,6 @@ export function Consumo() {
     itemMaisConsomePercentage: 40,
   }
 
-
-  const [service, setService] = useState(dataSelect[0].id);
-
-
   function handleChangeSelectValue(value: string) {
     setService(value)
   }
@@ -165,29 +71,47 @@ export function Consumo() {
     navigation.navigate('consumoDetail')
   }
 
+  useEffect(() => {
+    getCategoryData()
+  }, [])
+
+  useFocusEffect(
+    useCallback(
+      () => {
+        ref?.current?.scrollToOffset({ offset: 0, animated: true });
+        scrollRef?.current?.scrollTo({ offset: 0, animated: true });
+        getItemByCategoryData()
+      },
+      [service],
+    ))
+
   return (
     <VStack mt={16} flex={1} px={8}>
       <HeaderActionsUser title="Meu consumo" subtitle="Veja onde está consumindo mais para poder reduzir!" />
       <SelectInput
         selectedValue={service}
-        onValueChange={(value) => handleChangeSelectValue(value)}
+        onValueChange={(value) => {
+          handleChangeSelectValue(value)
+          getItemByCategoryData()
+        }
+        }
         data={dataSelect}
       />
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false}>
         <ProgressBar
-          textInsideProgressBar={`${categoryData.consumoTotalPercentage}%`}
-          percentage={categoryData.consumoTotalPercentage}
+          textInsideProgressBar={`${Math.round(dataItem.totalItensKwhByCategory * 100 / totalValue.totalKwh)}%`}
+          percentage={dataItem.totalItensKwhByCategory * 100 / totalValue.totalKwh}
           title="Consumo total na sua residência:"
         />
         <ProgressBar
-          textInsideProgressBar={`${categoryData.tempoTotalPercentage}%`}
-          percentage={categoryData.tempoTotalPercentage}
+          textInsideProgressBar={`${Math.round(dataItem.totalItemHoursByCategory * 100 / totalValue.totalHours)}%`}
+          percentage={dataItem.totalItemHoursByCategory * 100 / totalValue.totalHours}
           title="Tempo total de uso na sua residência:"
         />
         <ProgressBar
-          textInsideProgressBar={`${categoryData.itemMaisConsomePercentage}%`}
-          percentage={categoryData.itemMaisConsomePercentage}
-          title={`Item que mais consome: ${categoryData.itemMaisConsome}`}
+          textInsideProgressBar={`${dataItem.itemMoreConsumedPercentage}%`}
+          percentage={dataItem.itemMoreConsumedPercentage}
+          title={`Item que mais consome: ${dataItem.itemMoreConsumedName || 'Nenhum'}`}
         />
 
         <Text
@@ -200,12 +124,13 @@ export function Consumo() {
 
         <FlatList
           horizontal
+          ref={ref}
           showsHorizontalScrollIndicator={false}
           mb={8}
-          data={data}
+          data={dataItem.allItensDataByCategory}
           keyExtractor={(item, index): any => index}
-          renderItem={({ item }) => (
-            <ItemCard onPress={handleNavigateToDetails} image={item.src} />
+          renderItem={({ item }: any) => (
+            <ItemCard onPress={handleNavigateToDetails} image={item?.photo} />
           )}
         />
 

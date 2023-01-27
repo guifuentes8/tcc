@@ -32,7 +32,7 @@ export function ProgressBar({ title, percentage, textInsideProgressBar }: Props)
           fontSize="md"
           color="green.900"
           position="absolute"
-          right={3}>
+        >
           {textInsideProgressBar}
         </Text>
 

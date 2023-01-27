@@ -1,8 +1,9 @@
+import { api } from "@services/api";
 import { Box, Image, Text } from "native-base";
-import { ImageURISource, TouchableOpacity, TouchableOpacityProps } from "react-native";
+import { TouchableOpacity, TouchableOpacityProps } from "react-native";
 
 type Props = TouchableOpacityProps & {
-  image: ImageURISource;
+  image: string;
 }
 
 export function ItemCard({ image, ...rest }: Props) {
@@ -22,7 +23,7 @@ export function ItemCard({ image, ...rest }: Props) {
           w={20}
           h={20}
           alt="Foto item"
-          source={image}
+          source={{ uri: `${api.defaults.baseURL}/items/thumb/${image}` }}
         />
       </Box>
     </TouchableOpacity>

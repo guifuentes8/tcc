@@ -1,11 +1,10 @@
 import { Center, HStack, ScrollView, Text, VStack } from "native-base";
 import { CircularProgressBar } from '@components/CircularProgress';
-import Refrigerator from '@assets/geladeira.png'
 import { useToast } from 'native-base';
 import { HeaderActionsUser } from "@components/HeaderActionsUser";
 import { TouchableOpacity } from "react-native";
 import { MaskedText } from "react-native-mask-text";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { api } from "@services/api";
 import { useAuth } from "@hooks/useAuth";
 import { Loading } from "@components/Loading";
@@ -20,7 +19,6 @@ type dataDashboardProps = {
   economized: boolean;
   valorEsperado: number;
   valorUltimaConta: number;
-
 }
 
 export function Dashboard() {
@@ -36,7 +34,6 @@ export function Dashboard() {
       setIsLoading(true)
 
       const { data } = await api.get(`/items/dashboard/${user.id}`)
-
       setDataDashboard(data)
 
     } catch (error) {
@@ -80,7 +77,7 @@ export function Dashboard() {
                 >
                   <CircularProgressBar
                     radius={125}
-                    maxValue={dataDashboard?.comparePercentage}
+                    maxValue={dataDashboard?.comparePercentage < dataDashboard.total ? dataDashboard.total : dataDashboard.comparePercentage}
                     circularProgressValue={dataDashboard?.total}
                     strokeSize={9} />
 
@@ -95,7 +92,7 @@ export function Dashboard() {
                       maxWidth: 300,
                       minWidth: 300,
                       title: 'Maior consumo',
-                      description: 'Este é o item que mais consome energia em sua residência. Atualmente 30%.',
+                      description: `Este é o item que mais consome energia em sua residência. Atualmente ${dataDashboard.itemPercentageOfTotal}%.`,
                       placement: 'top',
                       bgColor: "blue.600"
                     })}
@@ -132,7 +129,7 @@ export function Dashboard() {
                     <CircularProgressBar
                       isCircularProgress={false}
                       radius={70}
-                      maxValue={dataDashboard.valorUltimaConta}
+                      maxValue={dataDashboard.valorUltimaConta < dataDashboard.valorEsperado ? dataDashboard.valorEsperado : dataDashboard.valorUltimaConta}
                       value={dataDashboard.valorEsperado}
                       strokeSize={5}
                     >

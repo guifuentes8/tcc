@@ -25,7 +25,7 @@ export function ConsumoDetail() {
   const dataSelect = [
     {
       id: "1",
-      name: 'Cozinha',
+      name: 'Geladeira',
     },
     {
       id: "2",
