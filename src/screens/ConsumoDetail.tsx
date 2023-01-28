@@ -9,19 +9,24 @@ import { MaskedText } from "react-native-mask-text";
 import { api } from "@services/api";
 import { useFocusEffect } from "@react-navigation/native";
 import { Loading } from "@components/Loading";
+import { useAuth } from "@hooks/useAuth";
 
 export function ConsumoDetail({ route }: any) {
 
   const { itemData } = route.params
   const [isLoading, setIsLoading] = useState(false);
-  const [dataSelect, setDataSelect] = useState([]);
+  const [dataSelect, setDataSelect] = useState<any>([]);
+  const [dataItem, setDataItem] = useState<any>({});
   const [service, setService] = useState<any>(null);
+  const { user } = useAuth()
+
 
 
   async function getCategoryData() {
     try {
       setIsLoading(true)
       const { data } = await api.get(`/items/allItemByCategory/${itemData.categoryId}`)
+
       setService(itemData.itemId)
       setDataSelect(data)
 
@@ -35,22 +40,21 @@ export function ConsumoDetail({ route }: any) {
 
 
 
-  const dataItem = {
-    itemImage: Refrigerator,
-    itemHours: 40,
-    itemConsumo: 90,
-    itemGasto: 40,
-    maxHoursCategoria: 120,
-    maxConsumoCategoria: 220,
-    maxGastoCategoria: 400,
-
-  }
-
+  /*  const dataItem = {
+     itemHours: 40,
+     itemConsumo: 90,
+     itemGasto: 40,
+     maxHoursCategoria: 120,
+     maxConsumoCategoria: 220,
+     maxGastoCategoria: 400,
+ 
+   }
+  */
   async function getItemData() {
     try {
       setIsLoading(true)
-      const { data } = await api.get(`/items/itemById/${service}`)
-      console.log(data)
+      const { data } = await api.get(`/items/itemById/${service}/${user.id}`)
+      setDataItem(data)
     } catch (error) {
 
     } finally {
@@ -76,13 +80,13 @@ export function ConsumoDetail({ route }: any) {
   }, [service])
 
 
+
   return (
 
     <VStack mt={16} flex={1} px={8}>
       {isLoading ? <Loading /> :
-
         <>
-          <HeaderActionsUser title="Banheiro" subtitle="Veja os detalhes dos itens deste cômodo!" />
+          <HeaderActionsUser title={itemData.categoryName} subtitle="Veja os detalhes dos itens deste cômodo!" />
           <SelectInput
             selectedValue={service}
             onValueChange={(value) => handleChangeSelectValue(value)}
@@ -94,7 +98,7 @@ export function ConsumoDetail({ route }: any) {
                 w={24}
                 h={24}
                 alt="Foto item"
-                source={dataItem.itemImage}
+                source={{ uri: `${api.defaults.baseURL}/items/thumb/${dataSelect.filter((item: any) => item?.id === service)[0]?.photo}` }}
               />
             </Center>
 
@@ -103,23 +107,26 @@ export function ConsumoDetail({ route }: any) {
                 <Text mb={2} color="green.100" fontSize="lg" textAlign="center" fontFamily="semibold">Horas</Text>
                 <CircularProgressBar
                   radius={50}
-                  maxValue={dataItem.maxHoursCategoria}
-                  value={dataItem.itemHours}
+                  maxValue={itemData.totalCategoryHours}
+                  value={dataItem.totalHours}
                   title="horas"
                   strokeSize={5}
+                  isCircularProgress={false}
                 >
-                  {dataItem.itemHours}h
+                  {dataItem?.totalHours}h
                 </CircularProgressBar>
               </VStack>
               <VStack>
                 <Text mb={2} color="green.100" fontSize="lg" textAlign="center" fontFamily="semibold">Consumo</Text>
                 <CircularProgressBar
                   radius={50}
-                  maxValue={dataItem.maxConsumoCategoria}
-                  value={dataItem.itemConsumo}
+                  maxValue={itemData.totalCategoryKwh}
+                  value={dataItem.total}
                   strokeSize={5}
+                  isCircularProgress={false}
+
                 >
-                  {dataItem.itemConsumo} kWh / mês
+                  {dataItem.total} {'\n'}kWh/mês
                 </CircularProgressBar>
               </VStack>
               <VStack>
@@ -127,9 +134,11 @@ export function ConsumoDetail({ route }: any) {
                 <CircularProgressBar
                   radius={50}
                   value={dataItem.itemGasto}
-                  maxValue={dataItem.maxGastoCategoria}
+                  maxValue={dataItem.itemGasto}
                   title=''
                   strokeSize={5}
+                  isCircularProgress={false}
+
                 >
                   <MaskedText
                     type="currency"
@@ -140,7 +149,7 @@ export function ConsumoDetail({ route }: any) {
                       precision: 2
                     }}
                   >
-                    {String(dataItem.itemGasto * 100)}
+                    {String(dataItem?.valorEsperado * 100)}
                   </MaskedText>
                 </CircularProgressBar>
               </VStack>

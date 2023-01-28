@@ -17,7 +17,7 @@ export function Consumo() {
 
   const navigation = useNavigation<AppNavigatorTabRoutesProps>()
   const [isLoading, setIsLoading] = useState(false);
-  const [dataSelect, setDataSelect] = useState([]);
+  const [dataSelect, setDataSelect] = useState<any>([]);
   const [dataItem, setDataItem] = useState<any>([]);
   const [totalValue, setTotalValue] = useState<any>({});
   const [service, setService] = useState<any>(1);
@@ -102,12 +102,12 @@ export function Consumo() {
           <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false}>
             <ProgressBar
               textInsideProgressBar={`${Math.round(dataItem.totalItensKwhByCategory * 100 / totalValue.totalKwh)}%`}
-              percentage={dataItem.totalItensKwhByCategory * 100 / totalValue.totalKwh}
+              percentage={totalValue.totalKwh === 0 ? 0 : dataItem.totalItensKwhByCategory * 100 / totalValue.totalKwh}
               title="Consumo total na sua residência:"
             />
             <ProgressBar
               textInsideProgressBar={`${Math.round(dataItem.totalItemHoursByCategory * 100 / totalValue.totalHours)}%`}
-              percentage={dataItem.totalItemHoursByCategory * 100 / totalValue.totalHours}
+              percentage={totalValue.totalHours === 0 ? 0 : dataItem.totalItemHoursByCategory * 100 / totalValue.totalHours}
               title="Tempo total de uso na sua residência:"
             />
             <ProgressBar
@@ -135,7 +135,11 @@ export function Consumo() {
                 <ItemCard onPress={() => handleNavigateToDetails(
                   {
                     itemId: item.id,
-                    categoryId: item.category_id
+                    categoryId: item.category_id,
+                    categoryName: dataSelect.filter((item: any) => item?.id === service)[0].name,
+                    totalCategoryHours: dataItem.totalItemHoursByCategory,
+                    totalCategoryKwh: dataItem.totalItensKwhByCategory,
+
                   }
                 )} image={item?.photo} />
               )}

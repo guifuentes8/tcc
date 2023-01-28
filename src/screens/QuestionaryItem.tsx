@@ -161,7 +161,7 @@ export function QuestionaryItem() {
         >
 
           <VStack px={8} flex={1}>
-            {questionData.length > 0 &&
+            {questionData?.length > 0 &&
               <>
                 <Center mb={6}>
                   <QuestionaryHeader

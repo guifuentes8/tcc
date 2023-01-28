@@ -80,7 +80,7 @@ export function Questionary() {
     <ScrollView flex={1} mt={12} pb={4} contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
       <VStack flex={1} px={8}>
 
-        {questionData.length > 0 &&
+        {questionData?.length > 0 &&
           <>
             <QuestionaryHeader
               titleQuestion={questionData[step]?.titleQuestion}
@@ -116,7 +116,7 @@ export function Questionary() {
           </>
         }
 
-        {questionData.length > 0 && step === 1 &&
+        {questionData?.length > 0 && step === 1 &&
           <Controller
             defaultValue={1}
             key="residents"
@@ -136,7 +136,7 @@ export function Questionary() {
             )}
           />
         }
-        {questionData.length > 0 && step === 2 &&
+        {questionData?.length > 0 && step === 2 &&
           <Controller
             defaultValue={1}
             key="comforts"

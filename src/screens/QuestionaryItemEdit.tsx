@@ -72,15 +72,14 @@ export function QuestionaryItemEdit({ route }: any) {
 
       const { data } = await api.get(`/questions/${itemId}/${user.id}`)
 
-
       setQuestionData(data)
-      setIsButtonSelected(data[0].all_day === 1)
-      setValueItemSize(data[0].quant_item)
-      setHours(data[0].hours)
-      setMinutes(data[0].minutes)
-      setIsButtonFrequencySelected(data[0].dayByMonth > 0)
-      setDayByWeekValue(data[0].dayByWeek)
-      setDayByMonthValue(data[0].dayByMonth)
+      setIsButtonSelected(data[0]?.all_day === 1)
+      setValueItemSize(data[0]?.quant_item)
+      setHours(data[0]?.hours ? data[0]?.hours : 0)
+      setMinutes(data[0]?.minutes ? data[0]?.minutes : 0)
+      setIsButtonFrequencySelected(data[0]?.dayByMonth > 0)
+      setDayByWeekValue(data[0]?.dayByWeek ? data[0]?.dayByWeek : 0)
+      setDayByMonthValue(data[0]?.dayByMonth ? data[0]?.dayByMonth : 0)
 
     } catch (error) {
 
@@ -132,7 +131,7 @@ export function QuestionaryItemEdit({ route }: any) {
         >
 
           <VStack px={8} flex={1}>
-            {questionData.length > 0 &&
+            {questionData && questionData?.length > 0 &&
               <>
                 <Center mb={6}>
                   <QuestionaryHeader
