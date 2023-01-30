@@ -19,6 +19,7 @@ type dataDashboardProps = {
   economized: boolean;
   valorEsperado: number;
   valorUltimaConta: number;
+  isLight: boolean;
 }
 
 export function Dashboard() {
@@ -50,6 +51,7 @@ export function Dashboard() {
       },
       [refreshedToken],
     ))
+
 
   return (
     <>
@@ -101,13 +103,13 @@ export function Dashboard() {
                       isCircularProgress={false}
                       radius={70}
                       maxValue={100}
-                      value={dataDashboard.itemPercentageOfTotal}
-                      sourceImg={{ uri: `${api.defaults.baseURL}/items/thumb/${dataDashboard.itemPhoto}` }}
+                      value={dataDashboard.isLight ? 100 : dataDashboard.itemPercentageOfTotal}
+                      sourceImg={{ uri: dataDashboard.isLight ? `${api.defaults.baseURL}/items/thumb/lampada.png` : `${api.defaults.baseURL}/items/thumb/${dataDashboard.itemPhoto}` }}
                       strokeSize={5}
                     >
-                      <Text numberOfLines={1} fontSize="10px">{dataDashboard.itemName}</Text>
+                      <Text numberOfLines={1} fontSize="10px">{dataDashboard.isLight ? 'Lâmpadas' : dataDashboard.itemName}</Text>
                       {'\n'}
-                      {dataDashboard.itemPercentageOfTotal}%
+                      {dataDashboard.isLight ? '100' : dataDashboard.itemPercentageOfTotal}%
                     </CircularProgressBar>
                   </TouchableOpacity>
 

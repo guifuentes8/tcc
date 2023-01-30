@@ -13,7 +13,7 @@ import { FlatList, ScrollView, SectionList, Text, useTheme, VStack } from "nativ
 import { useCallback, useEffect, useRef, useState } from "react";
 
 
-export function Consumo() {
+export function Consumo({ route }: any) {
 
   const navigation = useNavigation<AppNavigatorTabRoutesProps>()
   const [isLoading, setIsLoading] = useState(false);
@@ -51,6 +51,7 @@ export function Consumo() {
         totalKwh: response.data.total
       })
       const { data } = await api.get(`/category/itemByCategory/${service}/${user.id}`)
+
       setDataItem(data)
 
     } catch (error) {
@@ -71,8 +72,11 @@ export function Consumo() {
 
   useEffect(() => {
     getCategoryData()
-
   }, [])
+
+  useEffect(() => {
+    getItemByCategoryData()
+  }, [service, route])
 
   useFocusEffect(
     useCallback(
@@ -139,6 +143,7 @@ export function Consumo() {
                     categoryName: dataSelect.filter((item: any) => item?.id === service)[0].name,
                     totalCategoryHours: dataItem.totalItemHoursByCategory,
                     totalCategoryKwh: dataItem.totalItensKwhByCategory,
+                    totalCategoryPrice: dataItem.totalItensPrice
 
                   }
                 )} image={item?.photo} />

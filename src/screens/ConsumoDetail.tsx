@@ -1,6 +1,5 @@
 import { CircularProgressBar } from "@components/CircularProgress";
 import { HeaderActionsUser } from "@components/HeaderActionsUser";
-import Refrigerator from "@assets/geladeira.png";
 
 import { SelectInput } from "@components/SelectInput";
 import { Center, HStack, Image, ScrollView, Text, VStack } from "native-base";
@@ -38,22 +37,11 @@ export function ConsumoDetail({ route }: any) {
   }
 
 
-
-
-  /*  const dataItem = {
-     itemHours: 40,
-     itemConsumo: 90,
-     itemGasto: 40,
-     maxHoursCategoria: 120,
-     maxConsumoCategoria: 220,
-     maxGastoCategoria: 400,
- 
-   }
-  */
   async function getItemData() {
     try {
       setIsLoading(true)
       const { data } = await api.get(`/items/itemById/${service}/${user.id}`)
+
       setDataItem(data)
     } catch (error) {
 
@@ -77,8 +65,7 @@ export function ConsumoDetail({ route }: any) {
 
   useEffect(() => {
     getItemData()
-  }, [service])
-
+  }, [service, route])
 
 
   return (
@@ -133,8 +120,8 @@ export function ConsumoDetail({ route }: any) {
                 <Text mb={2} color="green.100" fontSize="lg" textAlign="center" fontFamily="semibold">Custo</Text>
                 <CircularProgressBar
                   radius={50}
-                  value={dataItem.itemGasto}
-                  maxValue={dataItem.itemGasto}
+                  value={dataItem.valorEsperado}
+                  maxValue={itemData.totalCategoryPrice}
                   title=''
                   strokeSize={5}
                   isCircularProgress={false}

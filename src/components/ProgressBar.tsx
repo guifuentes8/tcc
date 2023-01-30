@@ -9,7 +9,6 @@ type Props = {
 export function ProgressBar({ title, percentage, textInsideProgressBar }: Props) {
 
   const { colors } = useTheme()
-
   return (
     <VStack>
       <Text
@@ -19,6 +18,13 @@ export function ProgressBar({ title, percentage, textInsideProgressBar }: Props)
       >
         {title}
       </Text>
+      {percentage < 10 &&
+        <Text fontFamily="semibold"
+          fontSize="md"
+          color="green.200"
+          position="absolute" left="30" top="29" zIndex={9999}>{textInsideProgressBar}</Text>
+      }
+
       <Progress
         mb={6}
         mt={1}
@@ -27,14 +33,17 @@ export function ProgressBar({ title, percentage, textInsideProgressBar }: Props)
         _filledTrack={{ bg: colors.green[100], rounded: 12 }}
         value={percentage !== 0 ? percentage : 100}
       >
-        <Text
-          fontFamily="semibold"
-          fontSize="md"
-          color="green.900"
-          position="absolute"
-        >
-          {percentage !== 0 ? textInsideProgressBar : 'Nenhum'}
-        </Text>
+        {percentage > 10 &&
+          <Text
+            fontFamily="semibold"
+            fontSize="md"
+            color="green.900"
+            position="absolute"
+          >
+            {percentage !== 0 ? textInsideProgressBar : 'Nenhum'}
+          </Text>
+        }
+
 
       </Progress>
     </VStack>

@@ -31,8 +31,9 @@ type questionDataProps = {
 export function QuestionaryItem() {
 
   const [isLoading, setIsLoading] = useState(false);
-  const [questionData, setQuestionData] = useState<questionDataProps[]>([]);
   const [pulo, setPulo] = useState(false);
+
+  const [questionData, setQuestionData] = useState<questionDataProps[]>([]);
   const [step, setStep] = useState(0);
   const [dayByWeekValue, setDayByWeekValue] = useState(0);
   const [dayByMonthValue, setDayByMonthValue] = useState(0);
@@ -86,13 +87,7 @@ export function QuestionaryItem() {
     isButtonSelected ? data.all_day = true : data.all_day = false
 
     if (step < 15) {
-      if (pulo && step > 0) {
-        setMyData(prevArray => [...prevArray])
-
-      } else {
-
-        setMyData(prevArray => [...prevArray, data])
-      }
+      setMyData(prevArray => [...prevArray, data])
     }
 
     setValueItemSize(0)
@@ -100,34 +95,27 @@ export function QuestionaryItem() {
     setDayByWeekValue(0)
 
     try {
-      if (step === 15) {
+      if (step >= 15) {
 
         setIsLoading(true)
-        const dataSend = { userId: user.id, questions: pulo ? [...myData] : [...myData, data] }
-
-        console.log(dataSend)
-
-        const response = await api.post('/questions', dataSend)
+        const dataSend = { userId: user.id, questions: data.item_id ? [...myData, data] : [...myData] }
+        await api.post('/questions', dataSend)
+        setStep(prevState => prevState + 1)
       }
     } catch (error) {
 
     } finally {
       setIsLoading(false)
-      setPulo(false)
-      stepMoreOne()
+
     }
   }
 
-
-  function stepMoreOne() {
-    return setStep(prevState => prevState + 1)
-  }
-
   useEffect(() => {
+    if (step === 16 && pulo) {
+      handleSubmit(handleQuestionaryForm)()
+    }
 
-    setPulo(true)
-
-    if (step > 15) {
+    if (step > 16) {
       return navigation.navigate('dashboardTab')
     }
 
@@ -357,8 +345,10 @@ export function QuestionaryItem() {
             <HStack flex={1} py={8} alignItems="flex-end" justifyContent={step >= 1 ? 'space-between' : 'flex-end'}>
 
               {step >= 1 && <Button selected title="Pular" maxW={32} onPress={() => {
-                setPulo(true)
-                handleSubmit(handleQuestionaryForm)()
+                setStep(prevState => prevState + 1)
+                if (step === 15) {
+                  setPulo(true)
+                }
                 ref?.current?.scrollTo({ offset: 0, animated: true });
 
               }}
@@ -367,6 +357,7 @@ export function QuestionaryItem() {
               <NextButton onPress={() => {
                 ref?.current?.scrollTo({ offset: 0, animated: true });
                 handleSubmit(handleQuestionaryForm)()
+                setStep(prevState => prevState + 1)
               }} action="Próxima" icon="arrow-forward" />
 
             </HStack>

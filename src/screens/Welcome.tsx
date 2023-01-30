@@ -20,7 +20,7 @@ export function Welcome() {
 
   const StepOne = () => (
     <Center flex={1} px={8}>
-      <HeaderWelcome title={`Olá ${user.name}`} />
+      <HeaderWelcome textTransform="capitalize" title={`Olá ${user.name}`} />
       <HeaderWelcome title="Seja bem vindo!" />
 
       <LogoSvg height={200} width={200} />
