@@ -4,8 +4,10 @@ import { ProgressBar } from "@components/ProgressBar";
 import { SelectInput } from "@components/SelectInput";
 import { useFocusEffect } from "@react-navigation/native";
 import { api } from "@services/api";
-import { SectionList, Text, useTheme, VStack } from "native-base";
+import { Image, SectionList, Text, useTheme, VStack } from "native-base";
 import { useCallback, useEffect, useRef, useState } from "react";
+import userPhotoDefault from '@assets/userPhotoDefault.png'
+
 
 export function Ranking({ route }: any) {
 
@@ -65,6 +67,7 @@ export function Ranking({ route }: any) {
           id: index + 1,
           value: [(element.percentage = 100 - (element.valorEsperado * 100) / element.valorUltimaConta).toFixed(2), '%'],
           userName: element.nome,
+          photo: element.avatar
         })
         arrFinal.push({
           title: `${index + 1}º lugar`,
@@ -95,6 +98,7 @@ export function Ranking({ route }: any) {
           id: index + 1,
           value: [element.totalKwh, 'Kwh'],
           userName: element.nome,
+          photo: element.avatar
         })
         arrFinal.push({
           title: `${index + 1}º lugar`,
@@ -124,6 +128,7 @@ export function Ranking({ route }: any) {
           id: index + 1,
           value: [element.totalKwh, 'Kwh'],
           userName: element.nome,
+          photo: element.avatar
         })
         arrFinal.push({
           title: `${index + 1}º lugar`,
@@ -153,6 +158,7 @@ export function Ranking({ route }: any) {
           id: index + 1,
           value: [`R$ ${Math.round(element.valorEsperado)}`, ''],
           userName: element.nome,
+          photo: element.avatar
         })
         arrFinal.push({
           title: `${index + 1}º lugar`,
@@ -182,6 +188,7 @@ export function Ranking({ route }: any) {
           id: index + 1,
           value: [`R$ ${Math.round(element.valorEsperado)}`, ''],
           userName: element.nome,
+          photo: element.avatar
         })
         arrFinal.push({
           title: `${index + 1}º lugar`,
@@ -211,17 +218,18 @@ export function Ranking({ route }: any) {
           id: index + 1,
           value: [`${Math.round(element.totalHours)}`, 'horas'],
           userName: element.nome,
+          photo: element.avatar
         })
         arrFinal.push({
           title: `${index + 1}º lugar`,
-          data: arrayAux
+          data: arrayAux,
         })
       }
     });
     setDataItem(arrFinal)
   }
-
   function minusHours(data: any) {
+
     setIsPercentage(false)
     let arrFinal: { title: string; data: {}; }[] = []
     const consumed = data.sort((a: any, b: any) => {
@@ -241,6 +249,7 @@ export function Ranking({ route }: any) {
           id: index + 1,
           value: [`${Math.round(element.totalHours)}`, 'horas'],
           userName: element.nome,
+          photo: element.avatar
         })
         arrFinal.push({
           title: `${index + 1}º lugar`,
@@ -296,6 +305,7 @@ export function Ranking({ route }: any) {
     setService(value)
   }
 
+
   return (
     <VStack mt={16} flex={1} px={8} >
       {isLoading ? <Loading /> :
@@ -316,7 +326,16 @@ export function Ranking({ route }: any) {
               keyExtractor={(item: any) => item.id}
               renderSectionHeader={({ section }: any) => <Text fontSize="xl" fontFamily="audiowide" color="green.100">{section.title}</Text>}
               renderItem={({ item }) => (
-                <ProgressBar textInsideProgressBar={`${String(item.value[0])} ${item.value[1]}`} percentage={isPercentage ? item.value[0] : 100} title={`Morador: ${item.userName}`} />
+                <>
+                  <Image
+                    w={16}
+                    h={16}
+                    alt="Foto item"
+                    rounded="full"
+                    source={item.photo ? { uri: `${api.defaults.baseURL}/avatar/${item.photo}` } : userPhotoDefault}
+                  />
+                  <ProgressBar textInsideProgressBar={`${String(item.value[0])} ${item.value[1]}`} percentage={isPercentage ? item.value[0] : 100} title={`Morador: ${item.userName}`} />
+                </>
               )}
             />
           }
