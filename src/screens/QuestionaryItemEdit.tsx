@@ -45,7 +45,7 @@ export function QuestionaryItemEdit({ route }: any) {
   const ref = useRef<any>(null)
   const { user } = useAuth()
 
-  const questions = ['Quantos você possui em casa?', 'Quanto tempo o aparelho fica ligado?', 'Com qual frequência você o usa?']
+  const questions = ['Quantos você possui em casa?', 'Quanto tempo o aparelho fica ligado por dia?', 'Com qual frequência você o usa?']
 
   const { control, handleSubmit } = useForm({
     defaultValues: {

@@ -49,7 +49,7 @@ export function QuestionaryItem() {
 
   const questions = [
     "Quantos você possui em casa?",
-    "Quanto tempo o aparelho fica ligado?",
+    "Quanto tempo o aparelho fica ligado por dia?",
     "Com qual frequência você o usa?",
   ];
 
